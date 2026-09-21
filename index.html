@@ -593,6 +593,41 @@
       }
     }
 
+  
+    /* ===== スマホ横向き専用レイアウト ===== */
+    @media (max-width: 900px) and (orientation: landscape) {
+      body { padding: 4px 8px; justify-content: center; overflow: hidden; }
+      #bg-video { opacity: .22; }
+      .sidebar-panel { position: absolute; top: 5px; right: 7px; margin: 0; width: auto; gap: 5px; flex-direction: row; z-index: 20; }
+      .bgm-panel, .reset-panel { padding: 3px 7px; font-size: .62rem; border-width: 1px; box-shadow: none; }
+      .bgm-btn, .reset-btn { padding: 2px 7px; font-size: .62rem; box-shadow: none; }
+      .container { width: 98%; max-width: 980px; padding: 5px 10px 6px; margin: 0; border-radius: 14px; box-shadow: 0 0 12px rgba(179,0,255,.2); }
+      .container::before { border-radius: 14px; padding: 3px; }
+      .pop-logo { font-size: clamp(1.65rem, 6.5vw, 3rem); margin: 0 0 2px; text-shadow: none; filter: none; }
+      .pop-logo span { -webkit-text-stroke-width: 1.5px; text-shadow: 0 1px 0 rgba(255,255,255,.55), 0 0 6px var(--letter-color); }
+      .couple-stage { height: 70px; }
+      .character { width: 78px; bottom: -70px; filter: none; }
+      .character.groom { left: 4px; }
+      .character.bride { right: 4px; }
+      .character img { border-radius: 12px; border-width: 1px; box-shadow: none; }
+      .display-area { height: 82px; margin: 2px 0 4px; border-width: 2px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,243,255,.2); }
+      #num-display { font-size: clamp(2.7rem, 9vw, 4.5rem); text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue); }
+      .control-section { margin: 0; }
+      .btn { width: 150px; height: 34px; font-size: .95rem; border-width: 2px; box-shadow: none; }
+      .board-section { margin-top: 4px; padding-top: 4px; border-top-width: 1px; }
+      .board-grid { gap: 1px; padding: 2px; border-width: 1px; border-radius: 7px; box-shadow: none; }
+      .board-cell { font-size: .42rem; border-width: .5px; }
+      .board-header { font-size: .5rem; text-shadow: none; }
+      .bg-b.active, .bg-i.active, .bg-n.active, .bg-g.active, .bg-o.active { box-shadow: 0 0 4px currentColor; }
+      .board-cell.active.latest-active { transform: scale(1.06) !important; animation: none; }
+      .double-nums { gap: 5px; }
+      .double-nums span { width: 45px; height: 45px; font-size: 1.45rem; border-width: 1.5px; box-shadow: none; }
+      .cutin-text { font-size: 1.7rem; text-shadow: 0 0 5px var(--neon-pink); }
+      .particle { width: 7px; height: 7px; box-shadow: none; }
+      body.win-bg { animation: mobileLandscapeFlash .35s ease-out forwards; }
+      @keyframes mobileLandscapeFlash { 0% { background: #30374d; } 100% { background: linear-gradient(135deg, rgba(6,12,38,.94), rgba(15,30,77,.94)), var(--bg-image) no-repeat center/cover; } }
+    }
+
   </style>
 </head>
 <body>
