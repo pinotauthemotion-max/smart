@@ -1496,6 +1496,65 @@
 }
 </style>
 
+
+<style>
+@media (max-width: 900px) and (orientation: landscape) {
+  /* メインの抽選数字だけ大きくする */
+  #num-display {
+    font-size: clamp(3rem, 11vw, 5rem) !important;
+  }
+}
+</style>
+
+
+<style>
+@media (max-width: 900px) and (orientation: landscape) {
+  /* 確定したメイン数字を、履歴8個と同じB/I/N/G/O法則でネオン化 */
+  #num-display.main-b {
+    color: var(--neon-pink) !important;
+    text-shadow: 0 0 6px #fff, 0 0 14px var(--neon-pink), 0 0 30px var(--neon-pink), 0 0 48px var(--neon-pink) !important;
+  }
+  #num-display.main-i {
+    color: var(--neon-blue) !important;
+    text-shadow: 0 0 6px #fff, 0 0 14px var(--neon-blue), 0 0 30px var(--neon-blue), 0 0 48px var(--neon-blue) !important;
+  }
+  #num-display.main-n {
+    color: var(--neon-yellow) !important;
+    text-shadow: 0 0 6px #fff, 0 0 14px var(--neon-yellow), 0 0 30px var(--neon-yellow), 0 0 48px var(--neon-yellow) !important;
+  }
+  #num-display.main-g {
+    color: var(--neon-green) !important;
+    text-shadow: 0 0 6px #fff, 0 0 14px var(--neon-green), 0 0 30px var(--neon-green), 0 0 48px var(--neon-green) !important;
+  }
+  #num-display.main-o {
+    color: var(--neon-purple) !important;
+    text-shadow: 0 0 6px #fff, 0 0 14px var(--neon-purple), 0 0 30px var(--neon-purple), 0 0 48px var(--neon-purple) !important;
+  }
+}
+</style>
+
+
+<style>
+@media (max-width: 900px) and (orientation: landscape) {
+  /* メイン数字のネオン輝度だけ少し抑える */
+  #num-display.main-b {
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink) !important;
+  }
+  #num-display.main-i {
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue) !important;
+  }
+  #num-display.main-n {
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow) !important;
+  }
+  #num-display.main-g {
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-green), 0 0 20px var(--neon-green) !important;
+  }
+  #num-display.main-o {
+    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -1994,6 +2053,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeHistory();
+  });
+});
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const mainDisplay = document.getElementById('num-display');
+  if (!mainDisplay || typeof getHistoryClass !== 'function') return;
+
+  const observer = new MutationObserver(function () {
+    const text = mainDisplay.textContent.trim();
+    const num = Number(text);
+
+    if (Number.isInteger(num) && num >= 1 && num <= 75) {
+      const colorClass = getHistoryClass(num);
+      mainDisplay.classList.remove('main-b', 'main-i', 'main-n', 'main-g', 'main-o');
+      if (colorClass) mainDisplay.classList.add('main-' + colorClass);
+    } else {
+      mainDisplay.classList.remove('main-b', 'main-i', 'main-n', 'main-g', 'main-o');
+    }
+  });
+
+  observer.observe(mainDisplay, {
+    childList: true,
+    characterData: true,
+    subtree: true
   });
 });
 </script>
