@@ -711,36 +711,28 @@
       .bgm-btn, .reset-btn { padding: 2px 7px; font-size: .62rem; box-shadow: none; }
       .container { width: 98%; max-width: 980px; padding: 5px 10px 6px; margin: 0; border-radius: 14px; box-shadow: 0 0 12px rgba(179,0,255,.2); }
       .container::before { border-radius: 14px; padding: 3px; }
-      .pop-logo { font-size: clamp(1.65rem, 6.5vw, 3rem); margin: 0 0 2px; text-shadow: none; filter: none; }
+      .pop-logo { font-size: clamp(1.65rem, 6.5vw, 3rem); margin: 0 0 2px; }
       .pop-logo span { -webkit-text-stroke-width: 1.5px; text-shadow: 0 1px 0 rgba(255,255,255,.55), 0 0 6px var(--letter-color); }
       /* 横向きスマホ：新郎新婦をしっかり大きく見せる */
       .couple-stage { height: 108px; }
-      .character {
-        width: 122px;
-        bottom: -108px;
-        filter: none;
-      }
+      .character { width: 122px; bottom: -108px; }
       .character.groom { left: 3px; }
       .character.bride { right: 3px; }
-      .character img {
-        border-radius: 12px;
-        border-width: 1px;
-        box-shadow: none;
-      }
+      .character img { border-radius: 12px; border-width: 1px; }
       .display-area { height: 82px; margin: 2px 0 4px; border-width: 2px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,243,255,.2); }
       #num-display { font-size: clamp(2.7rem, 9vw, 4.5rem); text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue); }
       .control-section { margin: 0; }
-      .btn { width: 150px; height: 34px; font-size: .95rem; border-width: 2px; box-shadow: none; }
+      .btn { width: 150px; height: 34px; font-size: .95rem; border-width: 2px; }
       .board-section { margin-top: 4px; padding-top: 4px; border-top-width: 1px; }
       .board-grid { gap: 1px; padding: 2px; border-width: 1px; border-radius: 7px; box-shadow: none; }
       .board-cell { font-size: .42rem; border-width: .5px; }
       .board-header { font-size: .5rem; text-shadow: none; }
       .bg-b.active, .bg-i.active, .bg-n.active, .bg-g.active, .bg-o.active { box-shadow: 0 0 4px currentColor; }
-      .board-cell.active.latest-active { transform: scale(1.06) !important; animation: none; }
+      .board-cell.active.latest-active { transform: scale(1.15) !important; animation: latestPulse 0.3s infinite alternate ease-in-out; }
       .double-nums { gap: 5px; }
-      .double-nums span { width: 45px; height: 45px; font-size: 1.45rem; border-width: 1.5px; box-shadow: none; }
+      .double-nums span { width: 45px; height: 45px; font-size: 1.45rem; border-width: 1.5px; }
       .cutin-text { font-size: 1.7rem; text-shadow: 0 0 5px var(--neon-pink); }
-      .particle { width: 7px; height: 7px; box-shadow: none; }
+      .particle { width: 7px; height: 7px; }
       body.win-bg { animation: mobileLandscapeFlash .35s ease-out forwards; }
       @keyframes mobileLandscapeFlash { 0% { background: #30374d; } 100% { background: linear-gradient(135deg, rgba(6,12,38,.94), rgba(15,30,77,.94)), var(--bg-image) no-repeat center/cover; } }
     }
@@ -1527,7 +1519,27 @@
       .history-inline .history-number.previous-history-number { animation: elegantHistoryPulse 1.35s ease-in-out infinite !important; }
     }
 
-  </style>
+  
+    /* ===== Wedding版エフェクト復活：横向きでも抑えない ===== */
+    @media (max-width: 900px) and (orientation: landscape) {
+      #num-display.super-bounce { animation: megaBounce .8s cubic-bezier(.175,.885,.32,1.6) forwards !important; }
+      .btn:not(.btn-waiting) { transition: .15s ease !important; }
+      .btn:hover:not(.btn-waiting) { transform: scale(1.03) !important; }
+      .btn:active:not(.btn-waiting) { transform: scale(.97) !important; }
+      .couple-stage.celebrate .character { animation: coupleCelebrate .7s cubic-bezier(.2,.9,.3,1.45) infinite alternate !important; }
+      .couple-stage.starting .groom { animation: groomStart .7s cubic-bezier(.18,.9,.25,1.35) both !important; }
+      .couple-stage.starting .bride { animation: brideStart .7s .08s cubic-bezier(.18,.9,.25,1.35) both !important; }
+      .couple-stage.rolling .character { animation: coupleRolling .45s infinite alternate ease-in-out !important; }
+      .couple-stage.stopping .groom { animation: groomLook .45s ease-out forwards !important; }
+      .couple-stage.stopping .bride { animation: brideLook .45s .05s ease-out forwards !important; }
+      .board-cell.active.latest-active { animation: latestPulse .3s infinite alternate ease-in-out !important; transform: translate3d(0,0,0) scale(1.25) !important; }
+      .cutin-container.active { display:flex !important; background: rgba(0,0,0,.7) !important; }
+      .cutin-container .cutin-text { animation: doubleChanceTextInOut 1.6s ease-in-out both !important; }
+      body.win-bg { animation: megaFlash .8s ease-out forwards !important; }
+      .particle { display:block !important; }
+    }
+
+''</style>
 </head>
 <body>
 
