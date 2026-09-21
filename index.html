@@ -258,7 +258,7 @@
     .btn:hover:not(.btn-waiting) { transform: scale(1.03); box-shadow: 0 0 20px currentColor; }
     .btn:active:not(.btn-waiting) { transform: scale(0.97); }
 
-    .board-section { margin-top: 15px; border-top: 4px dashed #332a63; padding-top: 15px; }
+    .board-section { display:none; margin-top: 15px; border-top: 4px dashed #332a63; padding-top: 15px; }
     .board-grid {
       display: grid; grid-template-columns: repeat(16, 1fr); gap: 6px;
       background: rgba(15, 12, 27, 0.3); padding: 12px; border-radius: 20px;
@@ -288,6 +288,69 @@
     @keyframes explode {
       0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
       100% { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3); opacity: 0; }
+    }
+
+    /* 出た数字一覧 */
+    .history-btn {
+      display: block; margin: 12px auto 0; padding: 8px 20px;
+      border: 2px solid var(--neon-blue); border-radius: 999px;
+      background: rgba(10, 8, 30, 0.88); color: #fff;
+      font-family: inherit; font-weight: 900; font-size: 0.95rem;
+      cursor: pointer; box-shadow: 0 0 10px rgba(0,243,255,.35);
+      transition: .15s ease;
+    }
+    .history-btn:hover { transform: scale(1.04); box-shadow: 0 0 16px var(--neon-blue); }
+    .history-modal {
+      position: fixed; inset: 0; z-index: 1000; display: none;
+      align-items: center; justify-content: center;
+      padding: 18px; background: rgba(2,3,12,.78); backdrop-filter: blur(5px);
+    }
+    .history-modal.active { display: flex; }
+    .history-card {
+      width: min(760px, 94vw); max-height: min(76vh, 560px); overflow: hidden;
+      background: rgba(18,14,42,.97); border: 2px solid var(--neon-blue);
+      border-radius: 22px; box-shadow: 0 0 24px rgba(0,243,255,.45);
+      padding: 14px;
+    }
+    .history-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+    .history-head h2 { margin:0; color:#fff; font-size:clamp(1rem,3vw,1.45rem); text-shadow:0 0 8px var(--neon-blue); }
+    .history-close {
+      width:38px; height:38px; border-radius:50%; border:2px solid #fff;
+      background:var(--neon-pink); color:#fff; font-size:1.6rem; line-height:1; cursor:pointer;
+      box-shadow:0 0 10px var(--neon-pink);
+    }
+    .history-list {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(58px,1fr)); gap:7px;
+      max-height:calc(min(76vh,560px) - 80px); overflow-y:auto; padding:5px;
+    }
+    .history-number {
+      aspect-ratio:1; border-radius:50%; display:flex; align-items:center; justify-content:center;
+      color:#fff; font-weight:900; font-size:1.05rem; border:2px solid currentColor;
+      background:rgba(255,255,255,.05); box-shadow:0 0 7px currentColor;
+    }
+    .history-number.b { color:var(--neon-pink); }
+    .history-number.i { color:var(--neon-blue); }
+    .history-number.n { color:var(--neon-yellow); }
+    .history-number.g { color:var(--neon-green); }
+    .history-number.o { color:var(--neon-purple); }
+    .history-empty { color:#aaa; text-align:center; padding:28px 10px; font-weight:700; }
+
+    /* 横向き：履歴を画面下に押し込まず、ボタンから開く */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .sidebar-panel {
+        top: 8px; right: 10px; flex-direction: row; gap: 6px;
+      }
+      .bgm-panel, .reset-panel {
+        padding: 4px 8px; gap: 5px; border-width: 1.5px; box-shadow: 0 0 6px currentColor;
+        font-size: .72rem;
+      }
+      .bgm-btn, .reset-btn { padding: 3px 9px; font-size: .72rem; }
+      .container { padding-top: 7px; padding-bottom: 7px; }
+      .pop-logo { margin-right: 185px; }
+      .history-btn { margin-top: 5px; padding: 5px 15px; font-size: .78rem; }
+      .history-card { width:min(700px,92vw); max-height:82vh; border-radius:16px; padding:10px; }
+      .history-list { grid-template-columns:repeat(auto-fill,minmax(48px,1fr)); gap:5px; max-height:calc(82vh - 65px); }
+      .history-number { font-size:.85rem; }
     }
 
     @media (max-width: 768px) {
@@ -671,11 +734,23 @@
     </div>
     <div class="display-area"><div id="num-display">BINGO</div></div>
     <div class="control-section"><button id="action-btn" class="btn btn-start">START</button></div>
-    <div class="board-section"><div id="board-grid" class="board-grid"></div></div>
+
+    <button id="history-btn" class="history-btn" type="button">🔢 出た数字一覧</button>
+  </div>
+
+  <div id="history-modal" class="history-modal" aria-hidden="true">
+    <div class="history-card" role="dialog" aria-modal="true" aria-labelledby="history-title">
+      <div class="history-head">
+        <h2 id="history-title">🎯 今まで出た数字</h2>
+        <button id="history-close" class="history-close" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div id="history-list" class="history-list"><div class="history-empty">まだ数字は出ていません</div></div>
+    </div>
   </div>
 
   <script>
     let numbers = Array.from({length: 75}, (_, i) => i + 1);
+    let drawnHistory = [];
     let isRolling = false, isStopping = false, rouletteTimeout = null, currentSpeed = 40, stopStep = 0;
     let extremeCount = 0, targetExtremeCount = 0;
     let isDoubleChance = false;
@@ -685,6 +760,10 @@
     const btn = document.getElementById('action-btn');
     const resetBtn = document.getElementById('reset-btn');
     const boardGrid = document.getElementById('board-grid');
+    const historyBtn = document.getElementById('history-btn');
+    const historyModal = document.getElementById('history-modal');
+    const historyClose = document.getElementById('history-close');
+    const historyList = document.getElementById('history-list');
     const popLogo = document.getElementById('pop-logo');
     const bgVideo = document.getElementById('bg-video');
     const bgmAmbient = document.getElementById('bgm-ambient');
@@ -722,19 +801,34 @@
     }
     let audioCtx = null, mainGain = null, compressor = null;
 
-    const rows = [
-      { l: 'B', s: 1, e: 15, c: 'bg-b' }, { l: 'I', s: 16, e: 30, c: 'bg-i' },
-      { l: 'N', s: 31, e: 45, c: 'bg-n' }, { l: 'G', s: 46, e: 60, c: 'bg-g' },
-      { l: 'O', s: 61, e: 75, c: 'bg-o' }
-    ];
-    rows.forEach(r => {
-      const h = document.createElement('div'); h.className = 'board-header'; h.textContent = r.l; boardGrid.appendChild(h);
-      for (let i = r.s; i <= r.e; i++) {
-        const cell = document.createElement('div');
-        cell.className = `board-cell ${r.c}`; cell.id = `cell-${i}`; cell.textContent = i;
-        boardGrid.appendChild(cell);
+    function getHistoryClass(num) {
+      if (num <= 15) return 'b';
+      if (num <= 30) return 'i';
+      if (num <= 45) return 'n';
+      if (num <= 60) return 'g';
+      return 'o';
+    }
+
+    function renderHistory() {
+      if (!drawnHistory.length) {
+        historyList.innerHTML = '<div class="history-empty">まだ数字は出ていません</div>';
+        return;
       }
-    });
+      historyList.innerHTML = drawnHistory.map((num, index) =>
+        `<div class="history-number ${getHistoryClass(num)}" title="${index + 1}回目">${num}</div>`
+      ).join('');
+    }
+
+    function openHistory() {
+      renderHistory();
+      historyModal.classList.add('active');
+      historyModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeHistory() {
+      historyModal.classList.remove('active');
+      historyModal.setAttribute('aria-hidden', 'true');
+    }
 
     function getAudio() {
       if (!audioCtx) {
@@ -902,11 +996,18 @@
       }
     });
 
+    historyBtn.addEventListener('click', openHistory);
+    historyClose.addEventListener('click', closeHistory);
+    historyModal.addEventListener('click', (e) => { if (e.target === historyModal) closeHistory(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeHistory(); });
+
     resetBtn.addEventListener('click', () => {
       getAudio();
       if (confirm('ビンゴゲームを完全にリセットして、最初から開始しますか？\n（現在の当選履歴やボードの記録はすべて消去されます）')) {
         if (rouletteTimeout) { clearTimeout(rouletteTimeout); rouletteTimeout = null; }
         numbers = Array.from({length: 75}, (_, i) => i + 1);
+        drawnHistory = [];
+        renderHistory();
         isRolling = false; isStopping = false; currentSpeed = 40; stopStep = 0;
         isDoubleChance = false; extremeCount = 0; targetExtremeCount = 0;
 
@@ -997,6 +1098,7 @@
 
         document.getElementById(`cell-${chosen1}`)?.classList.add('active', 'latest-active');
         document.getElementById(`cell-${chosen2}`)?.classList.add('active', 'latest-active');
+        drawnHistory.push(chosen1, chosen2);
 
         isDoubleChance = false;
       } else {
@@ -1007,8 +1109,10 @@
         launchMegaConfetti();
 
         document.getElementById(`cell-${chosen}`)?.classList.add('active', 'latest-active');
+        drawnHistory.push(chosen);
       }
 
+      renderHistory();
       manageBGM();
       setTimeout(() => setCoupleState(''), 2200);
     }
