@@ -1240,18 +1240,30 @@
 
 /* ===== 最新の履歴だけ、ネオンを少し強調 ===== */
 @media (max-width: 900px) and (orientation: landscape) {
-  .history-list .history-number:first-child {
-    animation: latestHistoryNeon 0.9s ease-in-out infinite;
+  /* 数字だけ少し大きく。丸のサイズはそのまま */
+  .history-list .history-number {
+    font-size: 1.22rem !important;
+  }
+
+  .history-list .latest-history-number {
+    animation: latestHistoryNeon 0.55s ease-in-out infinite !important;
+    will-change: filter, box-shadow, transform;
   }
 
   @keyframes latestHistoryNeon {
     0%, 100% {
       filter: brightness(1);
-      box-shadow: 0 0 6px currentColor;
+      box-shadow: 0 0 8px currentColor, 0 0 16px currentColor;
+      transform: scale(1);
     }
     50% {
-      filter: brightness(1.7);
-      box-shadow: 0 0 14px currentColor, 0 0 28px currentColor, 0 0 42px currentColor;
+      filter: brightness(3);
+      box-shadow:
+        0 0 12px currentColor,
+        0 0 28px currentColor,
+        0 0 50px currentColor,
+        0 0 80px currentColor;
+      transform: scale(1.08);
     }
   }
 }
@@ -1285,7 +1297,7 @@
   <div class="sidebar-panel">
     <div class="history-panel">
       <span>🔢 数字</span>
-      <button id="history-btn" class="history-top-btn" type="button">一覧</button>
+      <button id="historyBtn" id="history-btn" class="history-top-btn" type="button">一覧</button>
     </div>
     <div class="bgm-panel">
       <span>🎵 BGM</span>
@@ -1378,7 +1390,7 @@
       }
       const recentHistory = drawnHistory.slice(-8).reverse();
       historyList.innerHTML = recentHistory.map((num, index) =>
-        `<div class="history-number ${getHistoryClass(num)}" title="${drawnHistory.length - index}回目">${num}</div>`
+        `<div class="history-number ${getHistoryClass(num)}${index === 0 ? ' latest-history-number' : ''}" title="${drawnHistory.length - index}回目">${num}</div>`
       ).join('');
     }
 
@@ -1701,5 +1713,40 @@
       }
     });
   </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const historyBtn = document.getElementById('historyBtn');
+  const historyModal =
+    document.getElementById('historyModal') ||
+    document.querySelector('.history-modal') ||
+    document.querySelector('[id*="history"][id*="modal"]');
+
+  if (!historyBtn || !historyModal) return;
+
+  historyBtn.addEventListener('click', () => {
+    historyModal.classList.add('active');
+    historyModal.style.display = 'flex';
+  });
+
+  const closeButtons = historyModal.querySelectorAll(
+    '.close, .close-btn, .modal-close, [data-close], button'
+  );
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      historyModal.classList.remove('active');
+      historyModal.style.display = '';
+    });
+  });
+
+  historyModal.addEventListener('click', (e) => {
+    if (e.target === historyModal) {
+      historyModal.classList.remove('active');
+      historyModal.style.display = '';
+    }
+  });
+});
+</script>
+
 </body>
 </html>
