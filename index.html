@@ -1269,6 +1269,45 @@
 }
 
 </style>
+
+<style>
+/* 一覧モーダル：横向きスマホでも表示できるようにする */
+@media (max-width: 900px) and (orientation: landscape) {
+  .history-modal {
+    display: none !important;
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 10000 !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+    background: rgba(2,3,12,.82) !important;
+  }
+
+  .history-modal.active {
+    display: flex !important;
+  }
+
+  .history-modal .history-card {
+    display: block !important;
+    width: min(700px, 92vw) !important;
+    max-width: 92vw !important;
+    max-height: 82dvh !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+
+  .history-modal .history-modal-list {
+    display: grid !important;
+    max-height: calc(82dvh - 30px) !important;
+    overflow-y: auto !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
