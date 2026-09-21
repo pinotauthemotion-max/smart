@@ -1490,116 +1490,41 @@
 
   
     /* Wedding版と同じ「確定直後」の強い発光 */
+    /* 確定した数字：白飛びさせず、上品なゴールド発光 */
     #num-display.history-confirm-glow {
-      animation: historyConfirmPulse 0.55s infinite alternate ease-in-out !important;
-      filter: brightness(1.15) !important;
-      text-shadow:
-        0 0 8px #fff,
-        0 0 18px currentColor,
-        0 0 34px currentColor,
-        0 0 55px currentColor !important;
+      animation: historyConfirmGold 0.7s infinite alternate ease-in-out !important;
+      color: #ffd76a !important;
+      filter: brightness(1.04) saturate(1.12) !important;
+      text-shadow: 0 0 5px rgba(255,245,190,.8), 0 0 12px #ffd76a, 0 0 22px rgba(255,190,45,.72) !important;
+    }
+    @keyframes historyConfirmGold {
+      0% { filter: brightness(1.02) saturate(1.05); text-shadow: 0 0 4px rgba(255,245,190,.65), 0 0 9px #ffd76a, 0 0 16px rgba(255,190,45,.55); }
+      100% { filter: brightness(1.22) saturate(1.15); text-shadow: 0 0 6px rgba(255,248,205,.85), 0 0 14px #ffd76a, 0 0 26px rgba(255,190,45,.72); }
     }
 
-    @keyframes historyConfirmPulse {
-      0% {
-        filter: brightness(1.05);
-        text-shadow:
-          0 0 6px #fff,
-          0 0 14px currentColor,
-          0 0 26px currentColor;
-      }
-      100% {
-        filter: brightness(1.7);
-        text-shadow:
-          0 0 12px #fff,
-          0 0 25px currentColor,
-          0 0 45px currentColor,
-          0 0 65px currentColor;
-      }
-    }
-
-    /* 履歴：最新は確定直後に強く光る。1個前はWedding版の最新数字のように発光を残す */
+    /* 履歴：最新は通常。光らせるのは1個前だけ */
     .history-number.latest-history-number {
-      z-index: 3;
-      font-weight: 1000 !important;
-      border-color: #fff !important;
-      filter: brightness(1.45) saturate(1.15);
-      text-shadow:
-        0 0 5px #fff,
-        0 0 12px currentColor,
-        0 0 24px currentColor !important;
-      box-shadow:
-        0 0 8px #fff,
-        0 0 16px currentColor,
-        0 0 30px currentColor !important;
-      animation: historyLatestPulse 0.55s infinite alternate ease-in-out !important;
+      z-index: 3; font-weight: 1000 !important; border-color: currentColor !important;
+      filter: none !important; text-shadow: 0 0 5px currentColor !important;
+      box-shadow: 0 0 7px currentColor !important; animation: none !important;
     }
-
     .history-number.previous-history-number {
-      z-index: 2;
-      font-weight: 1000 !important;
-      filter: brightness(1.18) saturate(1.08);
-      text-shadow:
-        0 0 4px #fff,
-        0 0 10px currentColor,
-        0 0 20px currentColor !important;
-      box-shadow:
-        0 0 7px currentColor,
-        0 0 14px currentColor !important;
-      animation: historyPreviousPulse 0.55s infinite alternate ease-in-out !important;
+      z-index: 2; font-weight: 1000 !important; filter: brightness(1.08) saturate(1.08) !important;
+      border-color: rgba(255,255,255,.9) !important;
+      text-shadow: 0 0 3px rgba(255,255,255,.7), 0 0 8px currentColor, 0 0 15px currentColor !important;
+      box-shadow: 0 0 5px currentColor, 0 0 11px currentColor, inset 0 0 5px rgba(255,255,255,.10) !important;
+      animation: elegantHistoryPulse 1.35s ease-in-out infinite !important;
     }
-
-    @keyframes historyLatestPulse {
-      0% {
-        filter: brightness(1.15) saturate(1.05);
-        box-shadow:
-          0 0 7px #fff,
-          0 0 14px currentColor,
-          0 0 24px currentColor;
-      }
-      100% {
-        filter: brightness(1.75) saturate(1.25);
-        box-shadow:
-          0 0 12px #fff,
-          0 0 25px currentColor,
-          0 0 42px currentColor;
-      }
-    }
-
-    @keyframes historyPreviousPulse {
-      0% {
-        filter: brightness(1.05) saturate(1);
-        box-shadow:
-          0 0 5px currentColor,
-          0 0 11px currentColor;
-      }
-      100% {
-        filter: brightness(1.45) saturate(1.12);
-        box-shadow:
-          0 0 8px currentColor,
-          0 0 19px currentColor,
-          0 0 28px currentColor;
-      }
+    @keyframes elegantHistoryPulse {
+      0%,100% { filter: brightness(1.03) saturate(1.03); box-shadow: 0 0 4px currentColor, 0 0 9px currentColor, inset 0 0 4px rgba(255,255,255,.06); }
+      50% { filter: brightness(1.18) saturate(1.08); box-shadow: 0 0 6px currentColor, 0 0 15px currentColor, inset 0 0 6px rgba(255,255,255,.12); }
     }
 
     /* 横向きでも上書きされないように */
     @media (max-width: 900px) and (orientation: landscape) {
-      #num-display.history-confirm-glow {
-        animation: historyConfirmPulse 0.55s infinite alternate ease-in-out !important;
-      }
-      .history-inline .history-number.latest-history-number {
-        animation: historyLatestPulse 0.55s infinite alternate ease-in-out !important;
-        box-shadow:
-          0 0 8px #fff,
-          0 0 16px currentColor,
-          0 0 30px currentColor !important;
-      }
-      .history-inline .history-number.previous-history-number {
-        animation: historyPreviousPulse 0.55s infinite alternate ease-in-out !important;
-        box-shadow:
-          0 0 7px currentColor,
-          0 0 14px currentColor !important;
-      }
+      #num-display.history-confirm-glow { animation: historyConfirmGold 0.7s infinite alternate ease-in-out !important; }
+      .history-inline .history-number.latest-history-number { animation: none !important; box-shadow: 0 0 7px currentColor !important; }
+      .history-inline .history-number.previous-history-number { animation: elegantHistoryPulse 1.35s ease-in-out infinite !important; }
     }
 
   </style>
