@@ -1318,6 +1318,128 @@
       }
     }
 
+
+    /* 数字一覧モーダルの表示を最終固定 */
+    #history-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,.78);
+    }
+
+    #history-modal.active {
+      display: flex !important;
+    }
+
+    #history-modal .history-card {
+      display: block;
+      visibility: visible;
+      opacity: 1;
+    }
+
+
+    /* 直前に確定した数字だけ、履歴の丸ごと光る */
+    .history-number.latest-history-number {
+      position: relative;
+      z-index: 2;
+      animation: latestHistoryGlow 1.15s ease-out;
+    }
+
+    @keyframes latestHistoryGlow {
+      0% {
+        transform: scale(1.16);
+        filter: brightness(1.9);
+        box-shadow:
+          0 0 6px currentColor,
+          0 0 14px currentColor,
+          0 0 28px currentColor;
+      }
+      35% {
+        transform: scale(1.08);
+        filter: brightness(1.45);
+        box-shadow:
+          0 0 8px currentColor,
+          0 0 18px currentColor,
+          0 0 32px currentColor;
+      }
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+        box-shadow: 0 0 5px currentColor;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .history-number.latest-history-number {
+        animation: none;
+      }
+    }
+
+
+    /* =========================================================
+       DOUBLE CHANCE：文字だけ。ズーム・移動なし。
+       音に合わせて「出る → 消える」だけ。
+       ========================================================= */
+    .cutin-container {
+      pointer-events: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border: 0 !important;
+      transform: none !important;
+    }
+
+    .cutin-container .cutin-text {
+      transform: none !important;
+      animation: doubleChanceTextInOut 1.6s ease-in-out both !important;
+      filter: none !important;
+      text-shadow:
+        0 0 6px #fff,
+        0 0 14px var(--neon-yellow),
+        0 0 24px var(--neon-pink) !important;
+    }
+
+    @keyframes doubleChanceTextInOut {
+      0% {
+        opacity: 0;
+        transform: none;
+      }
+      18% {
+        opacity: 1;
+        transform: none;
+      }
+      72% {
+        opacity: 1;
+        transform: none;
+      }
+      100% {
+        opacity: 0;
+        transform: none;
+      }
+    }
+
+    /* 横向き時も同じ。拡大・ズーム・移動は一切しない */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .cutin-container {
+        display: none !important;
+      }
+
+      .cutin-container.active {
+        display: flex !important;
+        transform: none !important;
+        animation: none !important;
+      }
+
+      .cutin-container .cutin-text {
+        font-size: clamp(2rem, 8vw, 4.5rem) !important;
+        transform: none !important;
+        animation: doubleChanceTextInOut 1.6s ease-in-out both !important;
+        filter: none !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1437,14 +1559,6 @@
       groomImg.src = `couple_assets/${groomFile}`;
       brideImg.src = `couple_assets/${brideFile}`;
     }
-    historyBtn.addEventListener('click', openHistory);
-    historyClose.addEventListener('click', closeHistory);
-    historyModal.addEventListener('click', (e) => {
-      if (e.target === historyModal) closeHistory();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeHistory();
-    });
 
     let audioCtx = null, mainGain = null, compressor = null;
 
@@ -1458,14 +1572,15 @@
 
     function renderHistory() {
       const recent = drawnHistory.slice(-8);
-      historyList.innerHTML = recent.map((num) =>
-        `<div class="history-number ${getHistoryClass(num)}">${num}</div>`
+      const latestIndex = recent.length - 1;
+      historyList.innerHTML = recent.map((num, index) =>
+        `<div class="history-number ${getHistoryClass(num)}${index === latestIndex ? ' latest-history-number' : ''}">${num}</div>`
       ).join('');
     }
 
     function renderAllHistory() {
       historyAllList.innerHTML = drawnHistory.map((num, index) =>
-        `<div class="history-number ${getHistoryClass(num)}" title="${index + 1}回目">${num}</div>`
+        `<div class="history-number ${getHistoryClass(num)}${index === drawnHistory.length - 1 ? ' latest-history-number' : ''}" title="${index + 1}回目">${num}</div>`
       ).join('');
     }
 
@@ -1692,11 +1807,13 @@
           if (extremeCount >= targetExtremeCount) {
             if (isDoubleChance) {
               cutinContainer.classList.add('active');
+      cutinContainer.style.transform = 'none';
               cutinText.className = 'cutin-text cutin-anim';
               playDoubleChanceCutinSound();
 
               setTimeout(() => {
                 cutinContainer.classList.remove('active');
+      cutinContainer.style.transform = 'none';
                 cutinText.className = 'cutin-text';
                 determineFinalNumber();
               }, 1400);
@@ -1798,6 +1915,30 @@
         manageBGM();
       }
     });
+
+    // 数字一覧ボタン
+    historyBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      renderAllHistory();
+      historyModal.classList.add('active');
+      historyModal.setAttribute('aria-hidden', 'false');
+    });
+
+    historyClose.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeHistory();
+    });
+
+    historyModal.addEventListener('click', (e) => {
+      if (e.target === historyModal) closeHistory();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeHistory();
+    });
+
   </script>
 </body>
 </html>
