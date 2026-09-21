@@ -1379,11 +1379,17 @@
 
 <style>
 @media (max-width: 900px) and (orientation: landscape) {
-  /* 水色の外枠だけ、上辺を30px上へ広げる。
-     ボタン・左右・下辺・内部要素は変更しない。 */
-  .container {
-    margin-top: -26px !important;
-    padding-top: calc(8px + 26px) !important;
+  /*
+   * display-areaそのものを「上方向だけ」拡張。
+   * 高さを50px増やし、margin-topを-50pxにすることで、
+   * 下辺・STARTの位置・中身の中心位置は元のまま。
+   */
+  .display-area {
+    flex-basis: 124px !important;
+    height: 124px !important;
+    margin-top: -50px !important;
+    margin-bottom: 2px !important;
+    box-sizing: border-box !important;
   }
 }
 </style>
