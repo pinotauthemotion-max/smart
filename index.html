@@ -1192,6 +1192,132 @@
       padding-top: 0 !important;
     }
 
+
+    /* 数字一覧ボタン：BGM / GAME と同じカプセル系 */
+    .history-panel {
+      background: rgba(26,22,53,.9);
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: 2px solid var(--neon-blue);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+    .history-top-btn {
+      font-family: inherit;
+      font-weight: 900;
+      border: 1.5px solid #fff;
+      padding: 4px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      background: var(--neon-blue);
+      color: var(--dark-bg);
+      box-shadow: 0 0 6px var(--neon-blue);
+    }
+
+    .history-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(2,3,12,.78);
+      backdrop-filter: blur(5px);
+    }
+    .history-modal.active { display:flex; }
+    .history-card {
+      width:min(760px,94vw);
+      max-height:min(76vh,560px);
+      overflow:hidden;
+      background:rgba(18,14,42,.97);
+      border:2px solid var(--neon-blue);
+      border-radius:22px;
+      box-shadow:0 0 24px rgba(0,243,255,.45);
+      padding:14px;
+    }
+    .history-head {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .history-head h2 {
+      margin:0;
+      color:#fff;
+      font-size:clamp(1rem,3vw,1.45rem);
+    }
+    .history-close {
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      border:2px solid #fff;
+      background:var(--neon-pink);
+      color:#fff;
+      font-size:1.6rem;
+      line-height:1;
+      cursor:pointer;
+    }
+    .history-card .history-list {
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(58px,1fr));
+      gap:7px;
+      max-height:calc(min(76vh,560px) - 80px);
+      overflow-y:auto;
+      padding:5px;
+    }
+
+    @media (max-width:900px) and (orientation:landscape) {
+      .container > .sidebar-panel .history-panel {
+        padding:2px 6px !important;
+        gap:3px !important;
+        font-size:.55rem !important;
+        border-width:1px !important;
+        box-shadow:none !important;
+      }
+      .container > .sidebar-panel .history-top-btn {
+        padding:1px 6px !important;
+        font-size:.55rem !important;
+        border-width:1px !important;
+        box-shadow:none !important;
+      }
+
+      /* メイン画面には直近8個だけ */
+      .history-inline {
+        display:block !important;
+        width:100% !important;
+        flex:1 1 auto !important;
+        min-height:0 !important;
+        margin-top:3px !important;
+        padding:0 !important;
+        border:0 !important;
+        overflow:hidden !important;
+      }
+      .history-inline .history-list {
+        display:grid !important;
+        grid-template-columns:repeat(8,minmax(0,1fr)) !important;
+        gap:5px !important;
+        width:min(520px,100%) !important;
+        margin:0 auto !important;
+        padding:0 !important;
+        overflow:hidden !important;
+      }
+      .history-inline .history-number {
+        width:100% !important;
+        aspect-ratio:1 / 1 !important;
+        font-size:clamp(.65rem,1.7vw,.95rem) !important;
+        border-width:2px !important;
+        box-shadow:0 0 5px currentColor !important;
+      }
+
+      .history-card .history-list {
+        grid-template-columns:repeat(8,minmax(0,1fr));
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1219,6 +1345,10 @@
     </h1>
 
   <div class="sidebar-panel">
+    <div class="history-panel">
+      <span>🔢 数字</span>
+      <button id="history-btn" class="history-top-btn" type="button">一覧</button>
+    </div>
     <div class="bgm-panel">
       <span>🎵 BGM</span>
       <button id="bgm-toggle" class="bgm-btn">OFF</button>
@@ -1245,6 +1375,16 @@
     <div id="history-list" class="history-list"></div>
   </div>
 
+  <div id="history-modal" class="history-modal" aria-hidden="true">
+    <div class="history-card" role="dialog" aria-modal="true" aria-labelledby="history-title">
+      <div class="history-head">
+        <h2 id="history-title">🎯 今まで出た数字</h2>
+        <button id="history-close" class="history-close" type="button" aria-label="閉じる">×</button>
+      </div>
+      <div id="history-all-list" class="history-list"></div>
+    </div>
+  </div>
+
   <script>
     let numbers = Array.from({length: 75}, (_, i) => i + 1);
     let drawnHistory = [];
@@ -1256,6 +1396,10 @@
     const display = document.getElementById('num-display');
     const btn = document.getElementById('action-btn');
     const resetBtn = document.getElementById('reset-btn');
+    const historyBtn = document.getElementById('history-btn');
+    const historyModal = document.getElementById('history-modal');
+    const historyClose = document.getElementById('history-close');
+    const historyAllList = document.getElementById('history-all-list');
     const boardGrid = document.getElementById('board-grid');
     const historyList = document.getElementById('history-list');
     const popLogo = document.getElementById('pop-logo');
@@ -1293,6 +1437,15 @@
       groomImg.src = `couple_assets/${groomFile}`;
       brideImg.src = `couple_assets/${brideFile}`;
     }
+    historyBtn.addEventListener('click', openHistory);
+    historyClose.addEventListener('click', closeHistory);
+    historyModal.addEventListener('click', (e) => {
+      if (e.target === historyModal) closeHistory();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeHistory();
+    });
+
     let audioCtx = null, mainGain = null, compressor = null;
 
     function getHistoryClass(num) {
@@ -1304,13 +1457,27 @@
     }
 
     function renderHistory() {
-      if (!drawnHistory.length) {
-        historyList.innerHTML = '';
-        return;
-      }
-      historyList.innerHTML = drawnHistory.map((num, index) =>
+      const recent = drawnHistory.slice(-8);
+      historyList.innerHTML = recent.map((num) =>
+        `<div class="history-number ${getHistoryClass(num)}">${num}</div>`
+      ).join('');
+    }
+
+    function renderAllHistory() {
+      historyAllList.innerHTML = drawnHistory.map((num, index) =>
         `<div class="history-number ${getHistoryClass(num)}" title="${index + 1}回目">${num}</div>`
       ).join('');
+    }
+
+    function openHistory() {
+      renderAllHistory();
+      historyModal.classList.add('active');
+      historyModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeHistory() {
+      historyModal.classList.remove('active');
+      historyModal.setAttribute('aria-hidden', 'true');
     }
 
     function getAudio() {
