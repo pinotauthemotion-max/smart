@@ -2186,5 +2186,26 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 </style>
 
+
+<style>
+/* スマホ横向き：実際のキャラクター親要素(couple-stage)を基準に大きく端へ寄せる */
+@media (max-width: 900px) and (orientation: landscape) {
+  .couple-stage {
+    position: relative !important;
+    overflow: visible !important;
+  }
+
+  .couple-stage .character.groom {
+    left: -300px !important;
+    right: auto !important;
+  }
+
+  .couple-stage .character.bride {
+    right: -300px !important;
+    left: auto !important;
+  }
+}
+</style>
+
 </body>
 </html>
