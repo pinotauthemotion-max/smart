@@ -866,6 +866,65 @@
       }
     }
 
+
+    /* =========================================================
+       横向きスマホ最終調整
+       ・数字表示エリアとSTARTの間隔を詰める
+       ・STARTを大きくする
+       ・Safari等が表示する動画の中央再生アイコンを確実に隠す
+       ========================================================= */
+    #bg-video {
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      /* 数字エリアの下余白を削ってSTARTを上へ */
+      .display-area {
+        height: 82px !important;
+        margin-bottom: 1px !important;
+      }
+
+      /* STARTを大きく */
+      .btn {
+        width: 220px !important;
+        height: 46px !important;
+        font-size: 1.15rem !important;
+        border-width: 3px !important;
+      }
+
+      .control-section {
+        margin-top: 0 !important;
+      }
+
+      /* ロゴ～3ボタン～数字エリアの縦間隔を少し圧縮 */
+      .container > .sidebar-panel {
+        margin-bottom: 3px !important;
+      }
+
+      /* 動画要素のネイティブ再生UIを出さない */
+      #bg-video::-webkit-media-controls,
+      #bg-video::-webkit-media-controls-enclosure,
+      #bg-video::-webkit-media-controls-panel,
+      #bg-video::-webkit-media-controls-play-button,
+      #bg-video::-webkit-media-controls-start-playback-button {
+        display: none !important;
+        -webkit-appearance: none !important;
+      }
+
+      #bg-video {
+        -webkit-appearance: none !important;
+        appearance: none !important;
+      }
+    }
+
+    /* Safariの動画UIが一瞬出てもゲーム画面中央に見えないよう、
+       背景動画を完全に操作対象外にする */
+    video#bg-video {
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
   </style>
 </head>
 <body>
