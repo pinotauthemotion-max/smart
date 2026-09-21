@@ -1539,7 +1539,154 @@
       .btn:active:not(.btn-waiting) { transition: none !important; transform: none !important; animation: none !important; }
     }
 
-''</style>
+''
+/* ===== 全エフェクトOFF：安定表示版 ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .pop-logo,
+  .character,
+  #num-display,
+  .btn,
+  .board-cell,
+  .history-number,
+  .double-nums span,
+  .cutin-text,
+  .particle {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .pop-logo,
+  .character,
+  #num-display,
+  .btn,
+  .board-cell,
+  .history-number,
+  .double-nums span,
+  .cutin-text {
+    transform: none !important;
+  }
+
+  .particle {
+    display: none !important;
+  }
+
+  .couple-stage.starting .groom,
+  .couple-stage.starting .bride,
+  .couple-stage.rolling .character,
+  .couple-stage.stopping .groom,
+  .couple-stage.stopping .bride,
+  .couple-stage.celebrate .character {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .board-cell.active.latest-active {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .cutin-container,
+  .cutin-container.active {
+    animation: none !important;
+  }
+
+  .cutin-container .cutin-text,
+  .cutin-container.active .cutin-text {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  body.win-bg {
+    animation: none !important;
+  }
+
+  .rolling-bounce,
+  .extreme-pulse-shake,
+  .super-bounce,
+  .history-confirm-glow,
+  .latest-history-number,
+  .previous-history-number {
+    animation: none !important;
+  }
+}
+
+
+/* ===== 履歴の色合いを元のBINGOカラーに復元 ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .history-number.b {
+    background: var(--neon-pink) !important;
+    border-color: var(--neon-pink) !important;
+    color: #fff !important;
+    text-shadow: 0 0 5px #fff !important;
+  }
+  .history-number.i {
+    background: var(--neon-blue) !important;
+    border-color: var(--neon-blue) !important;
+    color: #fff !important;
+    text-shadow: 0 0 5px #fff !important;
+  }
+  .history-number.n {
+    background: var(--neon-yellow) !important;
+    border-color: var(--neon-yellow) !important;
+    color: var(--dark-bg) !important;
+    text-shadow: 0 0 3px #fff !important;
+  }
+  .history-number.g {
+    background: var(--neon-green) !important;
+    border-color: var(--neon-green) !important;
+    color: var(--dark-bg) !important;
+    text-shadow: 0 0 3px #fff !important;
+  }
+  .history-number.o {
+    background: var(--neon-purple) !important;
+    border-color: var(--neon-purple) !important;
+    color: #fff !important;
+    text-shadow: 0 0 5px #fff !important;
+  }
+
+  /* 色だけ戻して、光るアニメーションは一切なし */
+  .history-number.latest-history-number,
+  .history-number.previous-history-number {
+    animation: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+  }
+}
+
+
+/* ===== DOUBLE CHANCE演出だけ復活：文字が出て消える版 ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .cutin-container.active {
+    display: flex !important;
+    background: rgba(0,0,0,0.7) !important;
+  }
+
+  .cutin-container.active .cutin-text {
+    animation: doubleChanceTextInOut 1.6s ease-in-out both !important;
+    transform: translate3d(0,0,0) !important;
+  }
+
+  @keyframes doubleChanceTextInOut {
+    0% {
+      opacity: 0;
+      transform: translate3d(0,0,0) scale(0.3);
+    }
+    18% {
+      opacity: 1;
+      transform: translate3d(0,0,0) scale(1.15);
+    }
+    75% {
+      opacity: 1;
+      transform: translate3d(0,0,0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(0,0,0) scale(1.8);
+    }
+  }
+}
+
+</style>
 </head>
 <body>
 
