@@ -1376,6 +1376,18 @@
 }
 </style>
 
+
+<style>
+@media (max-width: 900px) and (orientation: landscape) {
+  /* 水色の外枠だけ、上辺を30px上へ広げる。
+     ボタン・左右・下辺・内部要素は変更しない。 */
+  .container {
+    margin-top: -26px !important;
+    padding-top: calc(8px + 26px) !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
