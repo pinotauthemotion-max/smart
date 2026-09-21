@@ -868,61 +868,316 @@
 
 
     /* =========================================================
-       横向きスマホ最終調整
-       ・数字表示エリアとSTARTの間隔を詰める
-       ・STARTを大きくする
-       ・Safari等が表示する動画の中央再生アイコンを確実に隠す
+       Wedding Landscape Stable Edition
+       画面の中央70%を安全地帯として、その中だけで完結させる
        ========================================================= */
-    #bg-video {
-      pointer-events: none;
-    }
-
     @media (max-width: 900px) and (orientation: landscape) {
-      /* 数字エリアの下余白を削ってSTARTを上へ */
-      .display-area {
-        height: 82px !important;
-        margin-bottom: 1px !important;
+
+      html {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
       }
 
-      /* STARTを大きく */
-      .btn {
-        width: 220px !important;
-        height: 46px !important;
-        font-size: 1.15rem !important;
-        border-width: 3px !important;
-      }
-
-      .control-section {
-        margin-top: 0 !important;
-      }
-
-      /* ロゴ～3ボタン～数字エリアの縦間隔を少し圧縮 */
-      .container > .sidebar-panel {
-        margin-bottom: 3px !important;
-      }
-
-      /* 動画要素のネイティブ再生UIを出さない */
-      #bg-video::-webkit-media-controls,
-      #bg-video::-webkit-media-controls-enclosure,
-      #bg-video::-webkit-media-controls-panel,
-      #bg-video::-webkit-media-controls-play-button,
-      #bg-video::-webkit-media-controls-start-playback-button {
-        display: none !important;
-        -webkit-appearance: none !important;
+      body {
+        width: 100%;
+        height: 100dvh;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background:
+          linear-gradient(135deg, rgba(6,12,38,.94), rgba(15,30,77,.94)),
+          var(--bg-image) no-repeat center / cover;
       }
 
       #bg-video {
-        -webkit-appearance: none !important;
-        appearance: none !important;
+        opacity: .10 !important;
+        pointer-events: none !important;
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        touch-action: none !important;
       }
-    }
 
-    /* Safariの動画UIが一瞬出てもゲーム画面中央に見えないよう、
-       背景動画を完全に操作対象外にする */
-    video#bg-video {
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: none;
+      /* 画面中央の安全地帯 */
+      .container {
+        width: 70vw !important;
+        height: 70dvh !important;
+        min-width: 0 !important;
+        max-width: 1000px !important;
+        min-height: 0 !important;
+        margin: 0 !important;
+        padding: 6px 10px 5px !important;
+        border-radius: 18px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        overflow: hidden !important;
+        box-shadow: 0 0 12px rgba(179,0,255,.20) !important;
+      }
+
+      .container::before {
+        border-radius: 18px !important;
+        padding: 2px !important;
+      }
+
+      /* ロゴ */
+      .pop-logo {
+        flex: 0 0 auto !important;
+        font-size: clamp(1.25rem, 5vw, 2.7rem) !important;
+        line-height: .9 !important;
+        margin: 0 0 3px !important;
+        letter-spacing: -.07em !important;
+        filter: none !important;
+      }
+
+      .pop-logo span {
+        -webkit-text-stroke-width: 1px !important;
+        text-shadow: 0 1px 0 rgba(255,255,255,.45), 0 0 4px var(--letter-color) !important;
+        animation: none !important;
+        transform: none !important;
+      }
+
+      /* BGM / GAME：ロゴの直下 */
+      .container > .sidebar-panel {
+        position: static !important;
+        width: auto !important;
+        flex: 0 0 auto !important;
+        margin: 0 0 3px !important;
+        padding: 0 !important;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 5px !important;
+        z-index: 20 !important;
+      }
+
+      .container > .sidebar-panel .bgm-panel,
+      .container > .sidebar-panel .reset-panel {
+        padding: 2px 6px !important;
+        gap: 3px !important;
+        font-size: .55rem !important;
+        border-width: 1px !important;
+        box-shadow: none !important;
+      }
+
+      .container > .sidebar-panel .bgm-btn,
+      .container > .sidebar-panel .reset-btn {
+        padding: 1px 6px !important;
+        font-size: .55rem !important;
+        border-width: 1px !important;
+        box-shadow: none !important;
+      }
+
+      /* キャラクター：固定位置。移動・拡大アニメーションなし */
+      .couple-stage {
+        flex: 0 0 58px !important;
+        width: 100% !important;
+        height: 58px !important;
+        position: relative !important;
+        z-index: 7 !important;
+      }
+
+      .character {
+        width: 88px !important;
+        bottom: -76px !important;
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      .character.groom {
+        left: 1px !important;
+      }
+
+      .character.bride {
+        right: 1px !important;
+      }
+
+      .character img {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+
+      /* 数字表示：拡大・バウンスなし */
+      .display-area {
+        flex: 0 0 74px !important;
+        width: 100% !important;
+        height: 74px !important;
+        margin: 0 0 2px !important;
+        border-width: 2px !important;
+        border-radius: 10px !important;
+        box-shadow: 0 0 6px rgba(0,243,255,.18) !important;
+      }
+
+      #num-display {
+        font-size: clamp(2rem, 8vw, 3.8rem) !important;
+        line-height: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+        text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue) !important;
+      }
+
+      .rolling-bounce,
+      .extreme-pulse-shake,
+      .super-bounce {
+        animation: none !important;
+        transform: none !important;
+      }
+
+      /* START / STOP：位置固定、拡大縮小なし */
+      .control-section {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+      }
+
+      .btn {
+        width: 190px !important;
+        height: 38px !important;
+        font-size: 1rem !important;
+        border-width: 2px !important;
+        box-shadow: none !important;
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+      }
+
+      .btn:hover:not(.btn-waiting),
+      .btn:active:not(.btn-waiting) {
+        transform: none !important;
+      }
+
+      .btn-waiting {
+        animation: none !important;
+        transform: none !important;
+      }
+
+      /* 出た数字：同じ画面に常時表示。15列でコンパクトに */
+      .history-inline {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        width: 100% !important;
+        margin-top: 3px !important;
+        padding-top: 3px !important;
+        border-top: 1px solid rgba(179,0,255,.45) !important;
+        overflow: hidden !important;
+      }
+
+      .history-inline-title {
+        font-size: .58rem !important;
+        line-height: 1 !important;
+        margin-bottom: 2px !important;
+        color: #fff !important;
+        text-shadow: none !important;
+      }
+
+      .history-list {
+        width: 100% !important;
+        max-height: none !important;
+        overflow: hidden !important;
+        display: grid !important;
+        grid-template-columns: repeat(15, minmax(0, 1fr)) !important;
+        gap: 2px !important;
+        padding: 0 !important;
+      }
+
+      .history-number {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        font-size: clamp(.42rem, 1.1vw, .62rem) !important;
+        border-width: 1px !important;
+        box-shadow: none !important;
+        transform: none !important;
+        animation: none !important;
+      }
+
+      .history-empty {
+        grid-column: 1 / -1 !important;
+        padding: 4px !important;
+        font-size: .55rem !important;
+      }
+
+      /* 履歴モーダル由来の演出は使わない */
+      .history-btn,
+      .history-modal {
+        display: none !important;
+      }
+
+      /* ダブルチャンス・カットイン・紙吹雪・派手なフラッシュを停止 */
+      .cutin-container,
+      .particle {
+        display: none !important;
+      }
+
+      body.win-bg {
+        animation: none !important;
+      }
+
+      /* キャラクターの状態切替は画像だけ。ズーム/移動演出なし */
+      .couple-stage.starting .character,
+      .couple-stage.rolling .character,
+      .couple-stage.stopping .character,
+      .couple-stage.celebrate .character {
+        animation: none !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      /* 当選セル等の拡大演出も停止 */
+      .board-cell.active,
+      .board-cell.active.latest-active {
+        transform: none !important;
+        animation: none !important;
+      }
+
+      /* 超低い横画面 */
+      @media (max-height: 360px) {
+        .container {
+          height: 72dvh !important;
+        }
+
+        .pop-logo {
+          font-size: clamp(1.1rem, 4.5vw, 2.1rem) !important;
+        }
+
+        .couple-stage {
+          flex-basis: 50px !important;
+          height: 50px !important;
+        }
+
+        .character {
+          width: 76px !important;
+          bottom: -66px !important;
+        }
+
+        .display-area {
+          flex-basis: 62px !important;
+          height: 62px !important;
+        }
+
+        .btn {
+          width: 170px !important;
+          height: 32px !important;
+          font-size: .88rem !important;
+        }
+
+        .history-inline-title {
+          font-size: .5rem !important;
+        }
+
+        .history-list {
+          gap: 1px !important;
+        }
+      }
     }
 
   </style>
@@ -952,11 +1207,6 @@
     </h1>
 
   <div class="sidebar-panel">
-    <div class="history-panel">
-      <span>🔢 数字</span>
-      <button id="history-btn" class="history-top-btn" type="button">一覧</button>
-    </div>
-
     <div class="bgm-panel">
       <span>🎵 BGM</span>
       <button id="bgm-toggle" class="bgm-btn">OFF</button>
@@ -979,13 +1229,10 @@
 
   </div>
 
-  <div id="history-modal" class="history-modal" aria-hidden="true">
-    <div class="history-card" role="dialog" aria-modal="true" aria-labelledby="history-title">
-      <div class="history-head">
-        <h2 id="history-title">🎯 今まで出た数字</h2>
-        <button id="history-close" class="history-close" type="button" aria-label="閉じる">×</button>
-      </div>
-      <div id="history-list" class="history-list"><div class="history-empty">まだ数字は出ていません</div></div>
+  <div class="history-inline" aria-label="今まで出た数字">
+    <div class="history-inline-title">🎯 出た数字</div>
+    <div id="history-list" class="history-list">
+      <div class="history-empty">まだ数字は出ていません</div>
     </div>
   </div>
 
@@ -1001,9 +1248,6 @@
     const btn = document.getElementById('action-btn');
     const resetBtn = document.getElementById('reset-btn');
     const boardGrid = document.getElementById('board-grid');
-    const historyBtn = document.getElementById('history-btn');
-    const historyModal = document.getElementById('history-modal');
-    const historyClose = document.getElementById('history-close');
     const historyList = document.getElementById('history-list');
     const popLogo = document.getElementById('pop-logo');
     const bgVideo = document.getElementById('bg-video');
@@ -1058,17 +1302,6 @@
       historyList.innerHTML = drawnHistory.map((num, index) =>
         `<div class="history-number ${getHistoryClass(num)}" title="${index + 1}回目">${num}</div>`
       ).join('');
-    }
-
-    function openHistory() {
-      renderHistory();
-      historyModal.classList.add('active');
-      historyModal.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeHistory() {
-      historyModal.classList.remove('active');
-      historyModal.setAttribute('aria-hidden', 'true');
     }
 
     function getAudio() {
@@ -1236,11 +1469,6 @@
         await manageBGM();
       }
     });
-
-    historyBtn.addEventListener('click', openHistory);
-    historyClose.addEventListener('click', closeHistory);
-    historyModal.addEventListener('click', (e) => { if (e.target === historyModal) closeHistory(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeHistory(); });
 
     resetBtn.addEventListener('click', () => {
       getAudio();
