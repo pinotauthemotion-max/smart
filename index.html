@@ -1331,6 +1331,41 @@
 }
 </style>
 
+
+<style>
+/* 横向きでもDOUBLE CHANCEだけは表示する */
+@media (max-width: 900px) and (orientation: landscape) {
+  .cutin-container {
+    display: flex !important;
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    z-index: 10000 !important;
+    pointer-events: none !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0,0,0,0) !important;
+  }
+
+  .cutin-container.active {
+    display: flex !important;
+    background: rgba(0,0,0,.62) !important;
+  }
+
+  .cutin-text {
+    display: block !important;
+    font-size: clamp(2rem, 7vw, 3.2rem) !important;
+    opacity: 0;
+    text-align: center;
+  }
+
+  .cutin-text.cutin-anim {
+    animation: doubleChanceSimple 1.2s ease-in-out forwards !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
@@ -1749,7 +1784,7 @@
         isRolling = true; currentSpeed = 40; stopStep = 0;
         extremeCount = 0; targetExtremeCount = 0;
 
-        if (numbers.length <= 70 && Math.random() < 0.15 && numbers.length >= 2) {
+        if (drawnHistory.length >= 10 && numbers.length <= 70 && Math.random() < 0.10 && numbers.length >= 2) {
           isDoubleChance = true;
         } else {
           isDoubleChance = false;
