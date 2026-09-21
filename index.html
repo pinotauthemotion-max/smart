@@ -1714,26 +1714,60 @@
     });
   </script>
 
+<div id="history-modal" class="history-modal" aria-hidden="true">
+  <div class="history-card">
+    <div class="history-card-header">
+      
+      <button id="history-close-btn" type="button" aria-label="閉じる">×</button>
+    </div>
+    <div id="history-modal-list" class="history-list history-modal-list"></div>
+  </div>
+</div>
+
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const btn = document.getElementById('history-btn');
-  const modal = document.querySelector('.history-modal');
+document.addEventListener('DOMContentLoaded', function () {
+  const historyBtn = document.getElementById('history-btn');
+  const historyModal = document.getElementById('history-modal');
+  const historyModalList = document.getElementById('history-modal-list');
+  const historyCloseBtn = document.getElementById('history-close-btn');
 
-  if (!btn || !modal) return;
+  if (!historyBtn || !historyModal || !historyModalList) return;
 
-  btn.onclick = function(e) {
+  function renderFullHistory() {
+    if (typeof drawnHistory === 'undefined' || drawnHistory.length === 0) {
+      historyModalList.innerHTML = '<div class="history-empty">まだ数字が出ていません</div>';
+      return;
+    }
+
+    historyModalList.innerHTML = drawnHistory.slice().reverse().map((num, index) => {
+      const cls = typeof getHistoryClass === 'function' ? getHistoryClass(num) : '';
+      return `<div class="history-number ${cls}" title="${drawnHistory.length - index}回目">${num}</div>`;
+    }).join('');
+  }
+
+  historyBtn.addEventListener('click', function (e) {
     e.preventDefault();
     e.stopPropagation();
-    modal.classList.add('active');
-    modal.style.display = 'flex';
-  };
+    renderFullHistory();
+    historyModal.classList.add('active');
+    historyModal.setAttribute('aria-hidden', 'false');
+  });
 
-  modal.onclick = function(e) {
-    if (e.target === modal) {
-      modal.classList.remove('active');
-      modal.style.display = 'none';
-    }
-  };
+  function closeHistory() {
+    historyModal.classList.remove('active');
+    historyModal.setAttribute('aria-hidden', 'true');
+  }
+
+  if (historyCloseBtn) historyCloseBtn.addEventListener('click', closeHistory);
+
+  historyModal.addEventListener('click', function (e) {
+    if (e.target === historyModal) closeHistory();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeHistory();
+  });
 });
 </script>
 
