@@ -1068,7 +1068,7 @@
         margin-top: 3px !important;
         padding-top: 3px !important;
         border-top: 1px solid rgba(179,0,255,.45) !important;
-        overflow: hidden !important;
+        overflow: visible !important;
       }
 
       .history-inline-title {
@@ -1080,22 +1080,24 @@
       }
 
       .history-list {
-        width: 100% !important;
+        width: min(84%, 560px) !important;
         max-height: none !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         display: grid !important;
-        grid-template-columns: repeat(15, minmax(0, 1fr)) !important;
-        gap: 2px !important;
-        padding: 0 !important;
+        grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+        gap: 5px !important;
+        padding: 5px 4px !important;
+        margin: 0 auto !important;
+        justify-content: center !important;
       }
 
       .history-number {
         width: 100% !important;
         height: auto !important;
         aspect-ratio: 1 / 1 !important;
-        font-size: clamp(.42rem, 1.1vw, .62rem) !important;
-        border-width: 1px !important;
-        box-shadow: none !important;
+        font-size: clamp(.9rem, 2.1vw, 1.35rem) !important;
+        border-width: 2px !important;
+        box-shadow: 0 0 7px currentColor !important;
         transform: none !important;
         animation: none !important;
       }
@@ -1235,6 +1237,25 @@
       border-color: var(--neon-yellow) !important;
       box-shadow: 0 0 8px rgba(255,234,0,.35) !important;
     }
+
+/* ===== 最新の履歴だけ、ネオンを少し強調 ===== */
+@media (max-width: 900px) and (orientation: landscape) {
+  .history-list .history-number:first-child {
+    animation: latestHistoryNeon 0.9s ease-in-out infinite;
+  }
+
+  @keyframes latestHistoryNeon {
+    0%, 100% {
+      filter: brightness(1);
+      box-shadow: 0 0 6px currentColor;
+    }
+    50% {
+      filter: brightness(1.7);
+      box-shadow: 0 0 14px currentColor, 0 0 28px currentColor, 0 0 42px currentColor;
+    }
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1355,8 +1376,9 @@
         historyList.innerHTML = '';
         return;
       }
-      historyList.innerHTML = drawnHistory.map((num, index) =>
-        `<div class="history-number ${getHistoryClass(num)}" title="${index + 1}回目">${num}</div>`
+      const recentHistory = drawnHistory.slice(-8).reverse();
+      historyList.innerHTML = recentHistory.map((num, index) =>
+        `<div class="history-number ${getHistoryClass(num)}" title="${drawnHistory.length - index}回目">${num}</div>`
       ).join('');
     }
 
