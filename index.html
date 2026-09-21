@@ -1180,6 +1180,18 @@
       }
     }
 
+
+    /* 履歴は数字だけを表示。見出し・空状態メッセージなし */
+    .history-inline-title,
+    .history-empty {
+      display: none !important;
+    }
+
+    .history-inline {
+      border-top: 0 !important;
+      padding-top: 0 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -1230,10 +1242,7 @@
   </div>
 
   <div class="history-inline" aria-label="今まで出た数字">
-    <div class="history-inline-title">🎯 出た数字</div>
-    <div id="history-list" class="history-list">
-      <div class="history-empty">まだ数字は出ていません</div>
-    </div>
+    <div id="history-list" class="history-list"></div>
   </div>
 
   <script>
@@ -1296,7 +1305,7 @@
 
     function renderHistory() {
       if (!drawnHistory.length) {
-        historyList.innerHTML = '<div class="history-empty">まだ数字は出ていません</div>';
+        historyList.innerHTML = '';
         return;
       }
       historyList.innerHTML = drawnHistory.map((num, index) =>
