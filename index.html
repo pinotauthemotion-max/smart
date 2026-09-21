@@ -1518,25 +1518,25 @@
       .history-inline .history-number.latest-history-number { animation: none !important; box-shadow: 0 0 7px currentColor !important; }
       .history-inline .history-number.previous-history-number { animation: elegantHistoryPulse 1.35s ease-in-out infinite !important; }
     }
-
-  
-    /* ===== Wedding版エフェクト復活：横向きでも抑えない ===== */
+    /* ===== 残すエフェクトだけ復活 =====
+       ・数字のズーム
+       ・紙吹雪
+       ・新郎新婦のジャンプ／拡大
+       ・DOUBLE CHANCE演出
+    */
     @media (max-width: 900px) and (orientation: landscape) {
       #num-display.super-bounce { animation: megaBounce .8s cubic-bezier(.175,.885,.32,1.6) forwards !important; }
-      .btn:not(.btn-waiting) { transition: .15s ease !important; }
-      .btn:hover:not(.btn-waiting) { transform: scale(1.03) !important; }
-      .btn:active:not(.btn-waiting) { transform: scale(.97) !important; }
       .couple-stage.celebrate .character { animation: coupleCelebrate .7s cubic-bezier(.2,.9,.3,1.45) infinite alternate !important; }
-      .couple-stage.starting .groom { animation: groomStart .7s cubic-bezier(.18,.9,.25,1.35) both !important; }
-      .couple-stage.starting .bride { animation: brideStart .7s .08s cubic-bezier(.18,.9,.25,1.35) both !important; }
-      .couple-stage.rolling .character { animation: coupleRolling .45s infinite alternate ease-in-out !important; }
-      .couple-stage.stopping .groom { animation: groomLook .45s ease-out forwards !important; }
-      .couple-stage.stopping .bride { animation: brideLook .45s .05s ease-out forwards !important; }
-      .board-cell.active.latest-active { animation: latestPulse .3s infinite alternate ease-in-out !important; transform: translate3d(0,0,0) scale(1.25) !important; }
-      .cutin-container.active { display:flex !important; background: rgba(0,0,0,.7) !important; }
+      .particle { display: block !important; }
+      .cutin-container.active { display: flex !important; background: rgba(0,0,0,.7) !important; }
       .cutin-container .cutin-text { animation: doubleChanceTextInOut 1.6s ease-in-out both !important; }
-      body.win-bg { animation: megaFlash .8s ease-out forwards !important; }
-      .particle { display:block !important; }
+
+      /* それ以外はOFF */
+      .board-cell.active.latest-active { animation: none !important; transform: translate3d(0,0,0) scale(1.06) !important; }
+      body.win-bg { animation: none !important; }
+      .btn:not(.btn-waiting),
+      .btn:hover:not(.btn-waiting),
+      .btn:active:not(.btn-waiting) { transition: none !important; transform: none !important; animation: none !important; }
     }
 
 ''</style>
