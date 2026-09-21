@@ -713,11 +713,20 @@
       .container::before { border-radius: 14px; padding: 3px; }
       .pop-logo { font-size: clamp(1.65rem, 6.5vw, 3rem); margin: 0 0 2px; text-shadow: none; filter: none; }
       .pop-logo span { -webkit-text-stroke-width: 1.5px; text-shadow: 0 1px 0 rgba(255,255,255,.55), 0 0 6px var(--letter-color); }
-      .couple-stage { height: 70px; }
-      .character { width: 78px; bottom: -70px; filter: none; }
-      .character.groom { left: 4px; }
-      .character.bride { right: 4px; }
-      .character img { border-radius: 12px; border-width: 1px; box-shadow: none; }
+      /* 横向きスマホ：新郎新婦をしっかり大きく見せる */
+      .couple-stage { height: 108px; }
+      .character {
+        width: 122px;
+        bottom: -108px;
+        filter: none;
+      }
+      .character.groom { left: 3px; }
+      .character.bride { right: 3px; }
+      .character img {
+        border-radius: 12px;
+        border-width: 1px;
+        box-shadow: none;
+      }
       .display-area { height: 82px; margin: 2px 0 4px; border-width: 2px; border-radius: 12px; box-shadow: 0 0 8px rgba(0,243,255,.2); }
       #num-display { font-size: clamp(2.7rem, 9vw, 4.5rem); text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue); }
       .control-section { margin: 0; }
@@ -734,6 +743,15 @@
       .particle { width: 7px; height: 7px; box-shadow: none; }
       body.win-bg { animation: mobileLandscapeFlash .35s ease-out forwards; }
       @keyframes mobileLandscapeFlash { 0% { background: #30374d; } 100% { background: linear-gradient(135deg, rgba(6,12,38,.94), rgba(15,30,77,.94)), var(--bg-image) no-repeat center/cover; } }
+    }
+
+    /* 超低身長の横向き画面だけ少し縮小 */
+    @media (max-width: 900px) and (orientation: landscape) and (max-height: 360px) {
+      .couple-stage { height: 94px; }
+      .character {
+        width: 108px;
+        bottom: -94px;
+      }
     }
 
   </style>
