@@ -631,9 +631,8 @@
     </h1>
 
     <div id="couple-stage" class="couple-stage">
-      <!-- 同じフォルダに couple.jpg を置けばOK -->
-      <div class="character groom"><img src="couple.jpg" alt="新郎新婦キャラクター"></div>
-      <div class="character bride"><img src="couple.jpg" alt="新郎新婦キャラクター"></div>
+      <div class="character groom"><img id="groom-img" src="couple_assets/groom_idle.png" alt="新郎キャラクター"></div>
+      <div class="character bride"><img id="bride-img" src="couple_assets/bride_idle.png" alt="新婦キャラクター"></div>
     </div>
     <div class="display-area"><div id="num-display">BINGO</div></div>
     <div class="control-section"><button id="action-btn" class="btn btn-start">START</button></div>
@@ -660,8 +659,31 @@
     const cutinText = document.getElementById('cutin-text');
     const coupleStage = document.getElementById('couple-stage');
 
+    const groomImg = document.getElementById('groom-img');
+    const brideImg = document.getElementById('bride-img');
+
     function setCoupleState(state) {
+      const currentState = state || 'idle';
       coupleStage.className = `couple-stage ${state || ''}`;
+
+      const groomFile = {
+        idle: 'groom_idle.png',
+        starting: 'groom_start.png',
+        rolling: 'groom_rolling.png',
+        stopping: 'groom_stop.png',
+        celebrate: 'groom_celebrate.png'
+      }[currentState] || 'groom_idle.png';
+
+      const brideFile = {
+        idle: 'bride_idle.png',
+        starting: 'bride_start.png',
+        rolling: 'bride_rolling.png',
+        stopping: 'bride_stop.png',
+        celebrate: 'bride_celebrate.png'
+      }[currentState] || 'bride_idle.png';
+
+      groomImg.src = `couple_assets/${groomFile}`;
+      brideImg.src = `couple_assets/${brideFile}`;
     }
     let audioCtx = null, mainGain = null, compressor = null;
 
