@@ -164,8 +164,8 @@
     }
     .double-nums span.color-b { background-color: var(--neon-pink); box-shadow: 0 0 25px var(--neon-pink); color: white; text-shadow: 0 0 5px #fff; }
     .double-nums span.color-i { background-color: var(--neon-blue); box-shadow: 0 0 25px var(--neon-blue); color: white; text-shadow: 0 0 5px #fff; }
-    .double-nums span.color-n { background-color: var(--neon-yellow); box-shadow: 0 0 25px var(--neon-yellow); color: var(--dark-bg); text-shadow: 0 0 3px #fff; }
-    .double-nums span.color-g { background-color: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); color: var(--dark-bg); text-shadow: 0 0 3px #fff; }
+    .double-nums span.color-n { background-color: var(--neon-yellow); box-shadow: 0 0 25px var(--neon-yellow); color: var(--dark-bg); text-shadow: 0 0 1px #fff; }
+    .double-nums span.color-g { background-color: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); color: var(--dark-bg); text-shadow: 0 0 1px #fff; }
     .double-nums span.color-o { background-color: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple); color: white; text-shadow: 0 0 5px #fff; }
 
     .container {
@@ -326,8 +326,8 @@
     .board-header { font-size: 1.4rem; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
     .bg-b.active { background-color: var(--neon-pink); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-pink); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
     .bg-i.active { background-color: var(--neon-blue); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-blue); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
-    .bg-n.active { background-color: var(--neon-yellow); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-yellow); text-shadow: 0 0 3px #fff; transform: scale(1.05); }
-    .bg-g.active { background-color: var(--neon-green); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-green); text-shadow: 0 0 3px #fff; transform: scale(1.05); }
+    .bg-n.active { background-color: var(--neon-yellow); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-yellow); text-shadow: 0 0 1px #fff; transform: scale(1.05); }
+    .bg-g.active { background-color: var(--neon-green); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-green); text-shadow: 0 0 1px #fff; transform: scale(1.05); }
     .bg-o.active { background-color: var(--neon-purple); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-purple); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
     .board-cell.active.latest-active {
       border-width: 3.5px !important; border-color: #fff !important;
@@ -1538,19 +1538,19 @@
 @media (max-width: 900px) and (orientation: landscape) {
   /* メイン数字のネオン輝度だけ少し抑える */
   #num-display.main-b {
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink) !important;
+    text-shadow: 0 0 1px #fff, 0 0 6px var(--neon-pink), 0 0 12px var(--neon-pink) !important;
   }
   #num-display.main-i {
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue) !important;
+    text-shadow: 0 0 1px #fff, 0 0 6px var(--neon-blue), 0 0 12px var(--neon-blue) !important;
   }
   #num-display.main-n {
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-yellow), 0 0 20px var(--neon-yellow) !important;
+    text-shadow: 0 0 1px #fff, 0 0 6px var(--neon-yellow), 0 0 12px var(--neon-yellow) !important;
   }
   #num-display.main-g {
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-green), 0 0 20px var(--neon-green) !important;
+    text-shadow: 0 0 1px #fff, 0 0 6px var(--neon-green), 0 0 12px var(--neon-green) !important;
   }
   #num-display.main-o {
-    text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple) !important;
+    text-shadow: 0 0 1px #fff, 0 0 6px var(--neon-purple), 0 0 12px var(--neon-purple) !important;
   }
 }
 </style>
