@@ -1291,28 +1291,6 @@
   }
 }
 
-
-<style>
-@media (max-width: 900px) and (orientation: landscape) {
-  #history-modal .history-list {
-    width: min(720px, 92vw) !important;
-    max-width: 720px !important;
-    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-    gap: 8px !important;
-    padding: 8px !important;
-  }
-
-  #history-modal .history-list .history-number {
-    width: 56px !important;
-    height: 56px !important;
-    min-width: 56px !important;
-    min-height: 56px !important;
-    font-size: 1.22rem !important;
-    border-width: 2px !important;
-    box-shadow: 0 0 8px currentColor !important;
-  }
-}
-</style>
 </style>
 
 <style>
@@ -2105,6 +2083,29 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 </script>
+
+
+<style>
+/* 一覧モーダルの履歴だけ元サイズへ戻す。メイン画面の8個には影響させない */
+@media (max-width: 900px) and (orientation: landscape) {
+  #history-modal .history-modal-list {
+    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr)) !important;
+    gap: 7px !important;
+    padding: 5px !important;
+  }
+
+  #history-modal .history-modal-list .history-number {
+    width: auto !important;
+    height: auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+    font-size: 1.05rem !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 7px currentColor !important;
+  }
+}
+</style>
 
 </body>
 </html>
