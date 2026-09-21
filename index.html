@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta name="robots" content="noindex, nofollow">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEGA POP NEON BINGO PARTY!!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@700;900&family=Monoton&family=Mochiy+Pop+One&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --neon-pink: #ff007f;
+      --neon-blue: #00f3ff;
+      --neon-purple: #b300ff;
+      --neon-yellow: #ffea00;
+      --neon-green: #39ff14;
+      --dark-bg: #130f26;
+      --panel-bg: rgba(26, 22, 53, 0.43);
+      --bg-image: url('bg-image.jpg');
+    }
+
+    body {
+      font-family: 'M PLUS Rounded 1c', 'Hiragino Maru Gothic ProN', 'Arial Rounded MT Bold', sans-serif;
+      background: linear-gradient(135deg, rgba(6, 12, 38, 0.85) 0%, rgba(15, 30, 77, 0.85) 100%), var(--bg-image) no-repeat center center / cover;
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 10px; color: #fff; overflow: hidden; transition: background 0.5s ease;
+    }
+
+    #bg-video {
+      position: fixed; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
+      width: auto; height: auto; z-index: -2; transform: translate(-50%, -50%);
+      object-fit: cover; opacity: 0.35; transition: opacity 0.5s ease;
+    }
+
+    body.rolling-bg { background: linear-gradient(135deg, rgba(6, 12, 38, 0.85) 0%, rgba(15, 30, 77, 0.85) 100%), var(--bg-image) no-repeat center center / cover; }
+    body.waiting-bg { background: #03040a !important; }
+    body.win-bg { animation: megaFlash 0.8s ease-out forwards; }
+    @keyframes megaFlash {
+      0% { background: #fff; }
+      33% { background: #fff700; }
+      66% { background: var(--neon-yellow); }
+      100% { background: linear-gradient(135deg, rgba(6, 12, 38, 0.85) 0%, rgba(15, 30, 77, 0.85) 100%), var(--bg-image) no-repeat center center / cover; }
+    }
+
+    .sidebar-panel {
+      position: absolute; top: 15px; right: 15px;
+      display: flex; flex-direction: column; gap: 10px; z-index: 10;
+    }
+
+    .bgm-panel {
+      background: rgba(26, 22, 53, 0.9);
+      padding: 8px 18px; border-radius: 50px; border: 2px solid var(--neon-pink);
+      display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px var(--neon-pink);
+    }
+    .bgm-btn {
+      font-family: inherit; font-weight: 900; border: 1.5px solid #fff;
+      padding: 4px 14px; border-radius: 20px; cursor: pointer; background: var(--neon-yellow); transition: 0.1s;
+      color: var(--dark-bg); box-shadow: 0 0 6px var(--neon-yellow);
+    }
+    .bgm-btn.playing { background: var(--neon-pink); color: white; box-shadow: 0 0 10px var(--neon-pink); }
+
+    .reset-panel {
+      background: rgba(26, 22, 53, 0.9);
+      padding: 8px 18px; border-radius: 50px; border: 2px solid var(--neon-yellow);
+      display: flex; align-items: center; gap: 10px; box-shadow: 0 0 10px var(--neon-yellow);
+    }
+    .reset-btn {
+      font-family: inherit; font-weight: 900; border: 1.5px solid #fff;
+      padding: 4px 14px; border-radius: 20px; cursor: pointer; background: var(--neon-pink); transition: 0.15s ease;
+      color: white; box-shadow: 0 0 6px var(--neon-pink);
+    }
+    .reset-btn:hover { transform: scale(1.05); box-shadow: 0 0 12px var(--neon-pink); }
+    .reset-btn:active { transform: scale(0.95); }
+
+    .cutin-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0); pointer-events: none; z-index: 100;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .cutin-container.active { background: rgba(0, 0, 0, 0.7); }
+    .cutin-text {
+      font-family: 'Monoton', sans-serif; font-size: 6rem;
+      color: #fff; text-align: center; line-height: 1.1;
+      opacity: 0; transform: translate3d(0,0,0) scale(0.3);
+      text-shadow: 0 0 15px var(--neon-pink); will-change: transform, opacity;
+    }
+    .cutin-anim { animation: explodeCutin 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+    @keyframes explodeCutin {
+      0% { opacity: 0; transform: translate3d(0,0,0) scale(0.3); }
+      18% { opacity: 1; transform: translate3d(0,0,0) scale(1.15); }
+      75% { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+      100% { opacity: 0; transform: translate3d(0,0,0) scale(1.8); }
+    }
+
+    .double-nums {
+      display: flex; gap: 30px; justify-content: center; align-items: center;
+      transform: translate3d(0,0,0); will-change: transform;
+    }
+    .double-nums span {
+      display: flex; align-items: center; justify-content: center;
+      width: 135px; height: 135px; border-radius: 50%;
+      font-family: inherit; font-weight: 900; font-size: 4.5rem;
+      border: 5.5px solid #fff; transition: 0.2s ease;
+    }
+    .double-nums span.color-b { background-color: var(--neon-pink); box-shadow: 0 0 25px var(--neon-pink); color: white; text-shadow: 0 0 5px #fff; }
+    .double-nums span.color-i { background-color: var(--neon-blue); box-shadow: 0 0 25px var(--neon-blue); color: white; text-shadow: 0 0 5px #fff; }
+    .double-nums span.color-n { background-color: var(--neon-yellow); box-shadow: 0 0 25px var(--neon-yellow); color: var(--dark-bg); text-shadow: 0 0 3px #fff; }
+    .double-nums span.color-g { background-color: var(--neon-green); box-shadow: 0 0 25px var(--neon-green); color: var(--dark-bg); text-shadow: 0 0 3px #fff; }
+    .double-nums span.color-o { background-color: var(--neon-purple); box-shadow: 0 0 25px var(--neon-purple); color: white; text-shadow: 0 0 5px #fff; }
+
+    .container {
+      background: var(--panel-bg); padding: 15px 35px; border-radius: 35px;
+      width: 95%; max-width: 980px; text-align: center; margin-top: 10px; position: relative; z-index: 5;
+      box-shadow: 0 0 30px rgba(179, 0, 255, 0.45), 0 0 15px rgba(255, 0, 127, 0.35), inset 0 0 20px rgba(0, 243, 255, 0.15);
+      border: 5px solid transparent;
+    }
+    .container::before {
+      content: ""; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+      border-radius: 35px; padding: 5px;
+      background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-pink) 50%, var(--neon-blue) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; z-index: -1; pointer-events: none;
+    }
+
+    /* エモパレロゴ：太くてポップ＆カラフル */
+    .pop-logo {
+      font-family: 'Mochiy Pop One', 'Dela Gothic One', 'M PLUS Rounded 1c', sans-serif;
+      font-size: clamp(3.2rem, 6vw, 5.6rem);
+      margin: 0 0 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.02em;
+      user-select: none;
+      letter-spacing: -0.06em;
+      line-height: 1;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.28));
+    }
+    .pop-logo span {
+      display: inline-block;
+      position: relative;
+      color: var(--letter-color, #ff1493);
+      -webkit-text-stroke: 4px #fff;
+      paint-order: stroke fill;
+      text-shadow:
+        0 3px 0 rgba(255,255,255,.75),
+        0 7px 0 rgba(0,0,0,.12),
+        0 0 12px var(--letter-color),
+        0 0 24px color-mix(in srgb, var(--letter-color) 70%, transparent);
+      transform-origin: center bottom;
+      animation: none;
+    }
+    /* 1文字ずつカラフルに */
+    .pop-logo span:nth-child(1) { --letter-color: #ff1493; transform: rotate(-4deg); animation-delay: .0s; }
+    .pop-logo span:nth-child(2) { --letter-color: #00c8ff; transform: rotate(2deg); animation-delay: .12s; }
+    .pop-logo span:nth-child(3) { --letter-color: #ffd400; transform: rotate(-1deg); animation-delay: .24s; }
+    .pop-logo span:nth-child(4) { --letter-color: #7ee000; transform: rotate(4deg); animation-delay: .36s; }
+    .pop-logo span:nth-child(6) { --letter-color: #8a4dff; transform: rotate(-3deg); animation-delay: .48s; }
+    .pop-logo span:nth-child(7) { --letter-color: #ff3b81; transform: rotate(2deg); animation-delay: .60s; }
+    .pop-logo span:nth-child(8) { --letter-color: #00b9f2; transform: rotate(-2deg); animation-delay: .72s; }
+    .pop-logo .space { width: .16em; -webkit-text-stroke: 0; background: none; animation: none; }
+
+    .pop-logo.rainbow-active span:not(.space) {
+      animation: logoRainbow .45s infinite alternate ease-in-out !important;
+      -webkit-text-stroke-color: #fff;
+      filter: saturate(1.5) brightness(1.12);
+    }
+    @keyframes logoRainbow {
+      from { filter: hue-rotate(0deg) saturate(1.35) brightness(1.08); }
+      to { filter: hue-rotate(120deg) saturate(1.8) brightness(1.22); }
+    }
+
+
+    /* ===== 新郎新婦キャラクター演出 ===== */
+    .couple-stage { position: relative; height: 0; z-index: 7; pointer-events: none; }
+    .character { position: absolute; bottom: -250px; width: 210px; transition: transform .35s ease, filter .35s ease, opacity .35s ease; transform-origin: center bottom; filter: drop-shadow(0 12px 16px rgba(0,0,0,.45)); animation: coupleIdle 2.8s ease-in-out infinite; }
+    .character img { width: 100%; display: block; border-radius: 32px; border: 3px solid rgba(255,255,255,.45); box-shadow: 0 0 22px rgba(0,243,255,.18); }
+    .character.groom { left: -175px; animation-delay: 0s; }
+    .character.bride { right: -175px; animation-delay: .45s; }
+    @keyframes coupleIdle { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-10px) rotate(1deg); } }
+    .couple-stage.starting .groom { animation: groomStart .7s cubic-bezier(.18,.9,.25,1.35) both; }
+    .couple-stage.starting .bride { animation: brideStart .7s .08s cubic-bezier(.18,.9,.25,1.35) both; }
+    @keyframes groomStart { 0% { transform: translateX(-80px) translateY(20px) rotate(-8deg) scale(.82); opacity:.2; } 70% { transform: translateX(8px) translateY(-24px) rotate(5deg) scale(1.08); opacity:1; } 100% { transform:translateX(0) translateY(0) rotate(0) scale(1); opacity:1; } }
+    @keyframes brideStart { 0% { transform: translateX(80px) translateY(20px) rotate(8deg) scale(.82); opacity:.2; } 70% { transform: translateX(-8px) translateY(-24px) rotate(-5deg) scale(1.08); opacity:1; } 100% { transform:translateX(0) translateY(0) rotate(0) scale(1); opacity:1; } }
+    .couple-stage.rolling .character { animation: coupleRolling .45s infinite alternate ease-in-out; }
+    .couple-stage.rolling .bride { animation-delay:.12s; }
+    @keyframes coupleRolling { from { transform:translateY(0) rotate(-2deg) scale(1); filter:drop-shadow(0 0 8px var(--neon-blue)); } to { transform:translateY(-16px) rotate(2deg) scale(1.035); filter:drop-shadow(0 0 20px var(--neon-pink)); } }
+    .couple-stage.stopping .groom { animation:groomLook .45s ease-out forwards; }
+    .couple-stage.stopping .bride { animation:brideLook .45s .05s ease-out forwards; }
+    @keyframes groomLook { to { transform:translateX(18px) translateY(-8px) rotate(4deg) scale(1.07); filter:drop-shadow(0 0 24px var(--neon-yellow)); } }
+    @keyframes brideLook { to { transform:translateX(-18px) translateY(-8px) rotate(-4deg) scale(1.07); filter:drop-shadow(0 0 24px var(--neon-yellow)); } }
+    .couple-stage.celebrate .character { animation:coupleCelebrate .7s cubic-bezier(.2,.9,.3,1.45) infinite alternate; }
+    .couple-stage.celebrate .groom { filter:drop-shadow(0 0 24px var(--neon-green)); }
+    .couple-stage.celebrate .bride { filter:drop-shadow(0 0 24px var(--neon-pink)); animation-delay:.1s; }
+    @keyframes coupleCelebrate { from { transform:translateY(0) rotate(-3deg) scale(1); } to { transform:translateY(-28px) rotate(3deg) scale(1.09); } }
+    @media (max-width:1100px) { .character { width:150px; bottom:-205px; } .character.groom { left:-95px; } .character.bride { right:-95px; } }
+    @media (max-width:768px) { .couple-stage { height:105px; } .character { width:108px; bottom:-98px; opacity:.92; } .character.groom { left:-8px; } .character.bride { right:-8px; } .character img { border-radius:20px; border-width:2px; } }
+
+    .display-area {
+      background: rgba(15, 12, 27, 0.3); border: 5px solid var(--neon-blue); border-radius: 25px;
+      height: 200px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px; overflow: hidden; box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 0 20px rgba(0, 243, 255, 0.2);
+    }
+    #num-display {
+      font-family: inherit; font-size: 8rem; font-weight: 900; color: #fff;
+      text-shadow: 0 0 10px #fff, 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue);
+      display: inline-block; line-height: 1; transform-origin: center;
+    }
+    .rolling-bounce { animation: rollPulse 0.15s infinite alternate ease-in-out; }
+    @keyframes rollPulse {
+      0% { text-shadow: 0 0 10px #fff, 0 0 15px var(--neon-blue), 0 0 30px var(--neon-blue); }
+      100% { text-shadow: 0 0 15px #fff, 0 0 25px var(--neon-blue), 0 0 50px var(--neon-blue); }
+    }
+
+    .extreme-pulse-shake { animation: extremeColorLoop 0.4s infinite linear, extremePulseIntensity 0.08s infinite alternate !important; }
+    @keyframes extremeColorLoop {
+      0% { color: var(--neon-pink); } 20% { color: var(--neon-blue); } 40% { color: var(--neon-green); }
+      60% { color: var(--neon-yellow); } 80% { color: var(--neon-purple); } 100% { color: var(--neon-pink); }
+    }
+    @keyframes extremePulseIntensity {
+      0% { text-shadow: 0 0 10px #fff, 0 0 15px currentColor, 0 0 30px currentColor; }
+      100% { text-shadow: 0 0 20px #fff, 0 0 30px currentColor, 0 0 60px currentColor; }
+    }
+    .super-bounce { animation: megaBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.6) forwards; }
+    @keyframes megaBounce {
+      0% { transform: translate3d(0,0,0) scale(0.2); color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
+      45% { transform: translate3d(0,0,0) scale(1.3); color: #fff; text-shadow: 0 0 15px var(--neon-yellow); }
+      100% { transform: translate3d(0,0,0) scale(1); }
+    }
+
+    .btn {
+      font-family: inherit; font-size: 2rem; font-weight: 900;
+      width: 280px; height: 70px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50px; cursor: pointer; transition: 0.15s ease; outline: none; background: #0f0c1b;
+    }
+    .btn-start {
+      border: 5px solid var(--neon-green); color: var(--neon-green);
+      text-shadow: 0 0 8px var(--neon-green); box-shadow: 0 0 15px var(--neon-green), inset 0 0 10px rgba(57, 255, 20, 0.3);
+    }
+    .btn-stop {
+      border: 5px solid var(--neon-pink); color: var(--neon-pink);
+      text-shadow: 0 0 8px var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink), inset 0 0 10px rgba(255, 0, 127, 0.3);
+    }
+    .btn-waiting {
+      background-color: #0f0c1b !important; color: transparent !important; cursor: not-allowed;
+      transform: translateY(4px); animation: rainbowNeon 1.2s infinite linear;
+    }
+    @keyframes rainbowNeon {
+      0% { border: 5px solid var(--neon-pink) !important; box-shadow: 0 0 15px var(--neon-pink), inset 0 0 8px rgba(255, 0, 127, 0.3); }
+      20% { border: 5px solid var(--neon-blue) !important; box-shadow: 0 0 15px var(--neon-blue), inset 0 0 8px rgba(0, 243, 255, 0.3); }
+      40% { border: 5px solid var(--neon-green) !important; box-shadow: 0 0 15px var(--neon-green), inset 0 0 8px rgba(57, 255, 20, 0.3); }
+      60% { border: 5px solid var(--neon-yellow) !important; box-shadow: 0 0 15px var(--neon-yellow), inset 0 0 8px rgba(255, 234, 0, 0.3); }
+      80% { border: 5px solid var(--neon-purple) !important; box-shadow: 0 0 15px var(--neon-purple), inset 0 0 8px rgba(179, 0, 255, 0.3); }
+      100% { border: 5px solid var(--neon-pink) !important; box-shadow: 0 0 15px var(--neon-pink), inset 0 0 8px rgba(255, 0, 127, 0.3); }
+    }
+    .btn:hover:not(.btn-waiting) { transform: scale(1.03); box-shadow: 0 0 20px currentColor; }
+    .btn:active:not(.btn-waiting) { transform: scale(0.97); }
+
+    .board-section { margin-top: 15px; border-top: 4px dashed #332a63; padding-top: 15px; }
+    .board-grid {
+      display: grid; grid-template-columns: repeat(16, 1fr); gap: 6px;
+      background: rgba(15, 12, 27, 0.3); padding: 12px; border-radius: 20px;
+      border: 3px solid var(--neon-purple);
+    }
+    .board-cell { aspect-ratio: 1; background-color: rgba(26, 22, 53, 0.03); border: 1.5px solid #332a63; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 900; color: #4e438c; transition: 0.2s ease; position: relative; }
+    .board-header { font-size: 1.4rem; font-weight: 900; color: #fff; display: flex; align-items: center; justify-content: center; text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); }
+    .bg-b.active { background-color: var(--neon-pink); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-pink); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
+    .bg-i.active { background-color: var(--neon-blue); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-blue); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
+    .bg-n.active { background-color: var(--neon-yellow); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-yellow); text-shadow: 0 0 3px #fff; transform: scale(1.05); }
+    .bg-g.active { background-color: var(--neon-green); border-color: #fff; color: var(--dark-bg); box-shadow: 0 0 12px var(--neon-green); text-shadow: 0 0 3px #fff; transform: scale(1.05); }
+    .bg-o.active { background-color: var(--neon-purple); border-color: #fff; color: white; box-shadow: 0 0 12px var(--neon-purple); text-shadow: 0 0 5px #fff; transform: scale(1.05); }
+    .board-cell.active.latest-active {
+      border-width: 3.5px !important; border-color: #fff !important;
+      transform: translate3d(0,0,0) scale(1.25) !important; z-index: 10;
+      animation: latestPulse 0.3s infinite alternate ease-in-out;
+    }
+    @keyframes latestPulse {
+      0% { filter: brightness(1); box-shadow: 0 0 12px rgba(255, 255, 255, 0.6); }
+      100% { filter: brightness(1.6); box-shadow: 0 0 25px #fff; }
+    }
+
+    .particle {
+      position: absolute; width: 16px; height: 16px; border: 2px solid #fff; left: 50%; top: 40%; z-index: 99; pointer-events: none;
+      box-shadow: 0 0 8px currentColor; animation: explode 1.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+    }
+    @keyframes explode {
+      0% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+      100% { transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3); opacity: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 10px 12px; border-radius: 20px; }
+      .container::before { border-radius: 20px; }
+      .sidebar-panel { position: relative; top: auto; right: auto; margin-bottom: 12px; flex-direction: row; justify-content: center; width: 100%; gap: 10px; }
+      .bgm-panel, .reset-panel { padding: 6px 14px; font-size: 0.85rem; }
+      .bgm-btn, .reset-btn { padding: 3px 10px; }
+      .pop-logo { font-size: clamp(2.35rem, 10vw, 3.4rem); margin-bottom: 10px; gap: 0; }
+      .pop-logo span { -webkit-text-stroke-width: 3px; }
+      .display-area { height: 110px; margin-bottom: 8px; border-width: 3px; }
+      #num-display { font-size: 3.5rem; }
+      .cutin-text { font-size: 2.5rem; }
+      .double-nums { gap: 10px; }
+      .double-nums span { width: 65px; height: 65px; font-size: 2.2rem; border-width: 3px; }
+      .btn { font-size: 1.3rem; width: 180px; height: 48px; border-width: 3.5px; }
+      .board-section { margin-top: 10px; padding-top: 10px; }
+      .board-grid { gap: 2.5px; padding: 5px; border-width: 2px; border-radius: 12px; }
+      .board-cell { font-size: 0.52rem; border-width: 0.8px; }
+      .board-header { font-size: 0.65rem; text-shadow: 0 0 4px rgba(255, 255, 255, 0.6); }
+      .board-cell.active.latest-active { border-width: 2px !important; transform: translate3d(0,0,0) scale(1.15) !important; }
+    }
+
+    /* =========================================================
+       Wedding Edition - スマホ専用チューニング
+       PC版の派手さは残しつつ、スマホでは発光量を抑える
+       ========================================================= */
+    @media (max-width: 768px) {
+
+      /* 画面全体：スマホでは少し落ち着かせる */
+      body {
+        padding: 6px;
+        overflow-x: hidden;
+        background:
+          linear-gradient(135deg, rgba(6,12,38,.93) 0%, rgba(15,30,77,.93) 100%),
+          var(--bg-image) no-repeat center center / cover;
+      }
+
+      #bg-video {
+        opacity: .14;
+      }
+
+      /* 上部ロゴ：ここを一番調整 */
+      .pop-logo {
+        font-size: clamp(2.05rem, 10vw, 3rem);
+        margin-bottom: 8px;
+        letter-spacing: -.07em;
+        filter: none;
+      }
+
+      .pop-logo span {
+        -webkit-text-stroke: 2px #fff;
+        text-shadow:
+          0 2px 0 rgba(255,255,255,.55),
+          0 0 5px var(--letter-color);
+      }
+
+      /* スマホでは虹色アニメーションを弱くする */
+      .pop-logo.rainbow-active span:not(.space) {
+        animation: none !important;
+        filter: saturate(1.15) brightness(1.03);
+      }
+
+      /* 本体パネルの発光も少し弱く */
+      .container {
+        width: 98%;
+        padding: 8px 8px;
+        margin-top: 4px;
+        border-radius: 18px;
+        box-shadow:
+          0 0 12px rgba(179,0,255,.22),
+          0 0 7px rgba(255,0,127,.16),
+          inset 0 0 8px rgba(0,243,255,.08);
+      }
+
+      .container::before {
+        border-radius: 18px;
+        padding: 3px;
+        opacity: .78;
+      }
+
+      /* BGM / RESET */
+      .sidebar-panel {
+        position: relative;
+        top: auto;
+        right: auto;
+        margin-bottom: 7px;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+        gap: 6px;
+      }
+
+      .bgm-panel,
+      .reset-panel {
+        padding: 4px 8px;
+        font-size: .68rem;
+        border-width: 1px;
+        box-shadow: 0 0 5px currentColor;
+      }
+
+      .bgm-btn,
+      .reset-btn {
+        padding: 2px 8px;
+        font-size: .68rem;
+        box-shadow: none;
+      }
+
+      /* キャラクター：スマホでは少し小さく、線・発光を消す */
+      .character {
+        width: 86px;
+        bottom: -92px;
+        opacity: .96;
+        filter: drop-shadow(0 5px 7px rgba(0,0,0,.32));
+      }
+
+      .character img {
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .character.groom { left: -2px; }
+      .character.bride { right: -2px; }
+
+      .couple-stage.rolling .character {
+        filter: drop-shadow(0 5px 8px rgba(0,243,255,.20));
+      }
+
+      .couple-stage.stopping .groom,
+      .couple-stage.stopping .bride {
+        filter: drop-shadow(0 5px 8px rgba(255,234,0,.22));
+      }
+
+      .couple-stage.celebrate .groom {
+        filter: drop-shadow(0 5px 8px rgba(57,255,20,.22));
+      }
+
+      .couple-stage.celebrate .bride {
+        filter: drop-shadow(0 5px 8px rgba(255,0,127,.22));
+      }
+
+      /* 数字表示 */
+      .display-area {
+        height: 105px;
+        margin-bottom: 7px;
+        border-width: 2px;
+        border-radius: 16px;
+        box-shadow:
+          0 0 9px rgba(0,243,255,.20),
+          inset 0 0 8px rgba(0,243,255,.10);
+      }
+
+      #num-display {
+        font-size: 3.35rem;
+        text-shadow:
+          0 0 5px #fff,
+          0 0 10px var(--neon-blue),
+          0 0 18px var(--neon-blue);
+      }
+
+      .rolling-bounce {
+        animation-duration: .20s;
+      }
+
+      /* START / STOP */
+      .btn {
+        font-size: 1.15rem;
+        width: 175px;
+        height: 45px;
+        border-width: 2px;
+        box-shadow: none;
+      }
+
+      .btn-start {
+        text-shadow: 0 0 4px var(--neon-green);
+        box-shadow:
+          0 0 8px rgba(57,255,20,.38),
+          inset 0 0 5px rgba(57,255,20,.16);
+      }
+
+      .btn-stop {
+        text-shadow: 0 0 4px var(--neon-pink);
+        box-shadow:
+          0 0 8px rgba(255,0,127,.38),
+          inset 0 0 5px rgba(255,0,127,.16);
+      }
+
+      /* STOP待機中の虹色点滅もスマホでは控えめ */
+      .btn-waiting {
+        animation: mobileWaiting 1.6s infinite linear;
+      }
+
+      @keyframes mobileWaiting {
+        0%,100% {
+          border-color: rgba(255,0,127,.75) !important;
+          box-shadow: 0 0 6px rgba(255,0,127,.22);
+        }
+        50% {
+          border-color: rgba(0,243,255,.75) !important;
+          box-shadow: 0 0 6px rgba(0,243,255,.22);
+        }
+      }
+
+      /* BINGO盤 */
+      .board-section {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top-width: 2px;
+      }
+
+      .board-grid {
+        gap: 2px;
+        padding: 4px;
+        border-width: 1.5px;
+        border-radius: 10px;
+        box-shadow: 0 0 7px rgba(179,0,255,.18);
+      }
+
+      .board-cell {
+        font-size: .50rem;
+        border-width: .7px;
+      }
+
+      .board-header {
+        font-size: .62rem;
+        text-shadow: 0 0 3px rgba(255,255,255,.35);
+      }
+
+      .bg-b.active,
+      .bg-i.active,
+      .bg-n.active,
+      .bg-g.active,
+      .bg-o.active {
+        box-shadow: 0 0 7px currentColor;
+        text-shadow: 0 0 2px #fff;
+      }
+
+      .board-cell.active.latest-active {
+        animation: mobileLatestPulse .55s infinite alternate ease-in-out;
+        transform: translate3d(0,0,0) scale(1.10) !important;
+      }
+
+      @keyframes mobileLatestPulse {
+        from {
+          filter: brightness(1);
+          box-shadow: 0 0 5px rgba(255,255,255,.35);
+        }
+        to {
+          filter: brightness(1.25);
+          box-shadow: 0 0 10px rgba(255,255,255,.55);
+        }
+      }
+
+      /* 結果表示の派手すぎる光を抑える */
+      .super-bounce {
+        animation-duration: .65s;
+      }
+
+      .double-nums {
+        gap: 7px;
+      }
+
+      .double-nums span {
+        width: 60px;
+        height: 60px;
+        font-size: 2rem;
+        border-width: 2px;
+        box-shadow: 0 0 9px currentColor;
+        text-shadow: 0 0 2px #fff;
+      }
+
+      /* 当選時の背景フラッシュをスマホだけ弱める */
+      body.win-bg {
+        animation: mobileMegaFlash .45s ease-out forwards;
+      }
+
+      @keyframes mobileMegaFlash {
+        0% { background: #243052; }
+        45% { background: #555016; }
+        100% {
+          background:
+            linear-gradient(135deg, rgba(6,12,38,.93) 0%, rgba(15,30,77,.93) 100%),
+            var(--bg-image) no-repeat center center / cover;
+        }
+      }
+
+      /* DOUBLE CHANCE */
+      .cutin-container.active {
+        background: rgba(0,0,0,.78);
+      }
+
+      .cutin-text {
+        font-size: 2.15rem;
+        text-shadow: 0 0 8px var(--neon-pink);
+      }
+
+      /* 紙吹雪もスマホでは少し減らす */
+      .particle {
+        width: 11px;
+        height: 11px;
+        box-shadow: 0 0 4px currentColor;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <video id="bg-video" autoplay loop muted playsinline poster="bg-image.jpg">
+    <source src="bg-video.mp4" type="video/mp4">
+  </video>
+
+  <div id="cutin-container" class="cutin-container">
+    <div id="cutin-text" class="cutin-text">DOUBLE<br>CHANCE!!</div>
+  </div>
+
+  <div class="sidebar-panel">
+    <div class="bgm-panel">
+      <span>🎵 BGM</span>
+      <button id="bgm-toggle" class="bgm-btn">OFF</button>
+      <audio id="bgm-ambient" src="bgm_ambient.mp3" loop></audio>
+      <audio id="bgm-roulette" src="bgm_roulette.mp3"></audio>
+    </div>
+    <div class="reset-panel">
+      <span>🔄 GAME</span>
+      <button id="reset-btn" class="reset-btn">RESET</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1 id="pop-logo" class="pop-logo" aria-label="エモパレビンゴ">
+      <span style="--glow: var(--neon-pink); animation-delay: 0s;">エ</span>
+      <span style="--glow: var(--neon-blue); animation-delay: 0.1s;">モ</span>
+      <span style="--glow: var(--neon-yellow); animation-delay: 0.2s;">パ</span>
+      <span style="--glow: var(--neon-green); animation-delay: 0.3s;">レ</span>
+      <span class="space"></span>
+      <span style="--glow: var(--neon-purple); animation-delay: 0.5s;">ビ</span>
+      <span style="--glow: var(--neon-pink); animation-delay: 0.6s;">ン</span>
+      <span style="--glow: var(--neon-yellow); animation-delay: 0.7s;">ゴ</span>
+    </h1>
+
+    <div id="couple-stage" class="couple-stage">
+      <!-- 同じフォルダに couple.jpg を置けばOK -->
+      <div class="character groom"><img src="couple.jpg" alt="新郎新婦キャラクター"></div>
+      <div class="character bride"><img src="couple.jpg" alt="新郎新婦キャラクター"></div>
+    </div>
+    <div class="display-area"><div id="num-display">BINGO</div></div>
+    <div class="control-section"><button id="action-btn" class="btn btn-start">START</button></div>
+    <div class="board-section"><div id="board-grid" class="board-grid"></div></div>
+  </div>
+
+  <script>
+    let numbers = Array.from({length: 75}, (_, i) => i + 1);
+    let isRolling = false, isStopping = false, rouletteTimeout = null, currentSpeed = 40, stopStep = 0;
+    let extremeCount = 0, targetExtremeCount = 0;
+    let isDoubleChance = false;
+    let bgmEnabled = false;
+
+    const display = document.getElementById('num-display');
+    const btn = document.getElementById('action-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const boardGrid = document.getElementById('board-grid');
+    const popLogo = document.getElementById('pop-logo');
+    const bgVideo = document.getElementById('bg-video');
+    const bgmAmbient = document.getElementById('bgm-ambient');
+    const bgmRoulette = document.getElementById('bgm-roulette');
+    const bgmToggle = document.getElementById('bgm-toggle');
+    const cutinContainer = document.getElementById('cutin-container');
+    const cutinText = document.getElementById('cutin-text');
+    const coupleStage = document.getElementById('couple-stage');
+
+    function setCoupleState(state) {
+      coupleStage.className = `couple-stage ${state || ''}`;
+    }
+    let audioCtx = null, mainGain = null, compressor = null;
+
+    const rows = [
+      { l: 'B', s: 1, e: 15, c: 'bg-b' }, { l: 'I', s: 16, e: 30, c: 'bg-i' },
+      { l: 'N', s: 31, e: 45, c: 'bg-n' }, { l: 'G', s: 46, e: 60, c: 'bg-g' },
+      { l: 'O', s: 61, e: 75, c: 'bg-o' }
+    ];
+    rows.forEach(r => {
+      const h = document.createElement('div'); h.className = 'board-header'; h.textContent = r.l; boardGrid.appendChild(h);
+      for (let i = r.s; i <= r.e; i++) {
+        const cell = document.createElement('div');
+        cell.className = `board-cell ${r.c}`; cell.id = `cell-${i}`; cell.textContent = i;
+        boardGrid.appendChild(cell);
+      }
+    });
+
+    function getAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.setValueAtTime(-18, audioCtx.currentTime);
+        compressor.knee.setValueAtTime(20, audioCtx.currentTime);
+        compressor.ratio.setValueAtTime(8, audioCtx.currentTime);
+        compressor.attack.setValueAtTime(0.003, audioCtx.currentTime);
+        compressor.release.setValueAtTime(0.2, audioCtx.currentTime);
+        mainGain = audioCtx.createGain(); mainGain.gain.setValueAtTime(1.4, audioCtx.currentTime);
+        compressor.connect(mainGain); mainGain.connect(audioCtx.destination);
+      }
+      return audioCtx;
+    }
+
+    function createOsc(type, freq, gainVal, dur, startOffset = 0) {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator(), gain = ctx.createGain();
+      osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime + startOffset);
+      gain.gain.setValueAtTime(gainVal, ctx.currentTime + startOffset);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startOffset + dur);
+      osc.connect(gain); gain.connect(compressor);
+      osc.start(ctx.currentTime + startOffset); osc.stop(ctx.currentTime + startOffset + dur);
+    }
+
+    function playRollSound(isExtreme) {
+      getAudio();
+      if (isExtreme) {
+        createOsc('sine', 55, 0.6, 0.12); createOsc('sine', 48, 0.5, 0.15, 0.07);
+        const alertPitch = 350 + (extremeCount * 150);
+        createOsc('triangle', alertPitch, 0.12, 0.15);
+      } else {
+        createOsc('sine', currentSpeed > 150 ? 500 : 650, 0.22, 0.04);
+      }
+    }
+
+    // ★ ダブルチャンス：警告音からパーティー風ファンファーレに変更 ★
+    function playDoubleChanceCutinSound() {
+      const ctx = getAudio();
+
+      // 🎉 派手なパーティー・ファンファーレ！
+      // パパーン！ → ジャジャーン！ → キラキラキラ〜ン！
+      const melody = [
+        [523.25, 0.00, 0.12],   // C
+        [659.25, 0.09, 0.12],   // E
+        [783.99, 0.18, 0.14],   // G
+        [1046.50, 0.30, 0.75]   // 高いC
+      ];
+
+      melody.forEach(([freq, offset, dur], i) => {
+        // 明るく派手な主旋律
+        createOsc('triangle', freq, i === 3 ? 0.32 : 0.25, dur, offset);
+        createOsc('sawtooth', freq, i === 3 ? 0.11 : 0.08, dur * 0.75, offset);
+
+        // 厚みのある和音
+        createOsc('sine', freq * 1.25, 0.08, dur * 0.9, offset);
+      });
+
+      // 🎊 「ジャジャーン！」の太い和音
+      [523.25, 659.25, 783.99, 1046.50].forEach(freq => {
+        createOsc('triangle', freq, 0.16, 0.60, 0.34);
+      });
+
+      // ✨ キラキラキラ〜ン！
+      [1318.51, 1567.98, 1760.00, 2093.00, 2349.32].forEach((freq, i) => {
+        createOsc('sine', freq, 0.10, 0.42, 0.48 + i * 0.075);
+      });
+
+      // 🥁 パーティーっぽい「パン！パン！」のアクセント
+      [0.02, 0.18, 0.36].forEach((offset, i) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(i === 2 ? 180 : 140, ctx.currentTime + offset);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime + offset);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + offset + 0.07);
+        osc.connect(gain);
+        gain.connect(compressor);
+        osc.start(ctx.currentTime + offset);
+        osc.stop(ctx.currentTime + offset + 0.08);
+      });
+    }
+
+    function playMegaWinSound() {
+      getAudio();
+      const chords = [
+        [523.25, 659.25, 783.99], [587.33, 739.99, 880.00], [659.25, 830.61, 987.77],
+        [783.99, 987.77, 1174.66], [1046.50, 1318.51, 1567.98]
+      ];
+      chords.forEach((chord, i) => {
+        const offset = i * 0.08, dur = i === 4 ? 1.5 : 0.12;
+        chord.forEach(f => {
+          createOsc('triangle', f, 0.10, dur, offset); createOsc('sawtooth', f + 2, 0.07, dur, offset);
+        });
+      });
+    }
+
+    function launchMegaConfetti(isDouble = false) {
+      const colors = ['#ff007f', '#00f3ff', '#b300ff', '#ffea00', '#39ff14', '#ffffff'];
+      const shapes = ['50%', '0%', '20%'];
+      const count = isDouble ? 160 : 80;
+
+      for (let i = 0; i < count; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        const angle = Math.random() * Math.PI * 2, vel = Math.random() * 500 + 200;
+        p.style.setProperty('--x', Math.cos(angle) * vel + 'px');
+        p.style.setProperty('--y', Math.sin(angle) * vel + 150 + 'px');
+        p.style.setProperty('--r', (Math.random() * 720 - 360) + 'deg');
+        p.style.color = colors[Math.floor(Math.random() * colors.length)];
+        p.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+        p.style.animationDuration = (Math.random() * 1.0 + 0.8) + 's';
+        document.body.appendChild(p);
+        p.addEventListener('animationend', () => p.remove());
+      }
+    }
+
+    async function manageBGM() {
+      if (!bgmEnabled) {
+        bgmAmbient.pause();
+        bgmRoulette.pause();
+        return;
+      }
+
+      try {
+        if (isRolling) {
+          bgmAmbient.pause();
+          bgmRoulette.volume = isStopping ? 0.15 : 0.8;
+
+          if (bgmRoulette.paused) {
+            await bgmRoulette.play();
+          }
+        } else {
+          bgmRoulette.pause();
+          bgmRoulette.currentTime = 0;
+          bgmAmbient.volume = 0.8;
+
+          if (bgmAmbient.paused) {
+            await bgmAmbient.play();
+          }
+        }
+      } catch (error) {
+        console.warn('BGMを再生できませんでした:', error);
+      }
+    }
+
+    bgmToggle.addEventListener('click', async () => {
+      const ctx = getAudio();
+
+      if (ctx.state === 'suspended') {
+        try { await ctx.resume(); } catch (e) {}
+      }
+
+      if (!bgmEnabled) {
+        bgmEnabled = true;
+        bgmToggle.textContent = 'ON';
+        bgmToggle.classList.add('playing');
+        await manageBGM();
+      } else {
+        bgmEnabled = false;
+        bgmToggle.textContent = 'OFF';
+        bgmToggle.classList.remove('playing');
+        await manageBGM();
+      }
+    });
+
+    resetBtn.addEventListener('click', () => {
+      getAudio();
+      if (confirm('ビンゴゲームを完全にリセットして、最初から開始しますか？\n（現在の当選履歴やボードの記録はすべて消去されます）')) {
+        if (rouletteTimeout) { clearTimeout(rouletteTimeout); rouletteTimeout = null; }
+        numbers = Array.from({length: 75}, (_, i) => i + 1);
+        isRolling = false; isStopping = false; currentSpeed = 40; stopStep = 0;
+        isDoubleChance = false; extremeCount = 0; targetExtremeCount = 0;
+
+        display.innerHTML = 'BINGO'; display.className = '';
+        btn.textContent = 'START'; btn.className = 'btn btn-start';
+        document.body.className = '';
+        popLogo.className = 'pop-logo';
+        setCoupleState('');
+
+        document.querySelectorAll('.board-cell').forEach(cell => cell.classList.remove('active', 'latest-active'));
+
+        if (bgVideo) bgVideo.play().catch(() => {});
+        manageBGM();
+        createOsc('sine', 523.25, 0.15, 0.1); createOsc('sine', 659.25, 0.15, 0.1, 0.08); createOsc('sine', 783.99, 0.20, 0.2, 0.16);
+      }
+    });
+
+    function getCellColorClass(num) {
+      if (num >= 1 && num <= 15) return 'color-b';
+      if (num >= 16 && num <= 30) return 'color-i';
+      if (num >= 31 && num <= 45) return 'color-n';
+      if (num >= 46 && num <= 60) return 'color-g';
+      return 'color-o';
+    }
+
+    function runRoulette() {
+      if (!isRolling) return;
+
+      display.textContent = numbers[Math.floor(Math.random() * numbers.length)];
+
+      if (isStopping) {
+        if (currentSpeed <= 260) {
+          stopStep++;
+          currentSpeed += stopStep * 25;
+          playRollSound(false);
+        } else {
+          if (extremeCount >= targetExtremeCount) {
+            if (isDoubleChance) {
+              cutinContainer.classList.add('active');
+              cutinText.className = 'cutin-text cutin-anim';
+              playDoubleChanceCutinSound();
+
+              setTimeout(() => {
+                cutinContainer.classList.remove('active');
+                cutinText.className = 'cutin-text';
+                determineFinalNumber();
+              }, 1400);
+              return;
+            } else {
+              determineFinalNumber();
+              return;
+            }
+          }
+
+          display.className = 'extreme-pulse-shake';
+          playRollSound(true);
+          extremeCount++;
+          currentSpeed += 120;
+        }
+      } else {
+        playRollSound(false);
+      }
+
+      rouletteTimeout = setTimeout(runRoulette, currentSpeed);
+    }
+
+    function determineFinalNumber() {
+      isRolling = false; isStopping = false;
+      setCoupleState('celebrate');
+      btn.textContent = 'START'; btn.className = 'btn btn-start'; display.className = '';
+      document.body.className = 'win-bg';
+
+      setTimeout(() => {
+        popLogo.classList.add('rainbow-active');
+        setTimeout(() => popLogo.classList.remove('rainbow-active'), 1000);
+      }, 800);
+
+      if (isDoubleChance && numbers.length >= 2) {
+        const chosen1 = numbers.splice(Math.floor(Math.random() * numbers.length), 1)[0];
+        const chosen2 = numbers.splice(Math.floor(Math.random() * numbers.length), 1)[0];
+
+        const class1 = getCellColorClass(chosen1);
+        const class2 = getCellColorClass(chosen2);
+
+        display.innerHTML = `<div class="double-nums super-bounce"><span class="${class1}">${chosen1}</span><span class="${class2}">${chosen2}</span></div>`;
+        playMegaWinSound();
+        launchMegaConfetti(true);
+
+        document.getElementById(`cell-${chosen1}`)?.classList.add('active', 'latest-active');
+        document.getElementById(`cell-${chosen2}`)?.classList.add('active', 'latest-active');
+
+        isDoubleChance = false;
+      } else {
+        const chosen = numbers.splice(Math.floor(Math.random() * numbers.length), 1)[0];
+        display.textContent = chosen;
+        display.classList.add('super-bounce');
+        playMegaWinSound();
+        launchMegaConfetti();
+
+        document.getElementById(`cell-${chosen}`)?.classList.add('active', 'latest-active');
+      }
+
+      manageBGM();
+      setTimeout(() => setCoupleState(''), 2200);
+    }
+
+    btn.addEventListener('click', () => {
+      getAudio();
+      if (!numbers.length && !isRolling) return alert('全数字が出ました！');
+      if (numbers.length === 1 && !isRolling) isDoubleChance = false;
+
+      if (!isRolling && !isStopping) {
+        document.querySelectorAll('.board-cell.latest-active').forEach(cell => cell.classList.remove('latest-active'));
+
+        isRolling = true; currentSpeed = 40; stopStep = 0;
+        extremeCount = 0; targetExtremeCount = 0;
+
+        if (numbers.length <= 70 && Math.random() < 0.15 && numbers.length >= 2) {
+          isDoubleChance = true;
+        } else {
+          isDoubleChance = false;
+        }
+
+        setCoupleState('starting');
+        setTimeout(() => { if (isRolling && !isStopping) setCoupleState('rolling'); }, 700);
+        btn.textContent = 'STOP'; btn.className = 'btn btn-stop';
+        document.body.className = 'rolling-bg'; display.className = 'rolling-bounce';
+
+        bgmRoulette.currentTime = 0;
+        manageBGM();
+        runRoulette();
+      } else if (isRolling && !isStopping) {
+        isStopping = true;
+        setCoupleState('stopping');
+        targetExtremeCount = Math.floor(Math.random() * 5);
+        extremeCount = 0;
+        btn.textContent = ''; btn.className = 'btn btn-waiting';
+        document.body.className = 'waiting-bg';
+
+        manageBGM();
+      }
+    });
+  </script>
+</body>
+</html>
