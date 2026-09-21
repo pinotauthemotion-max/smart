@@ -1297,7 +1297,7 @@
   <div class="sidebar-panel">
     <div class="history-panel">
       <span>🔢 数字</span>
-      <button id="historyBtn" id="history-btn" class="history-top-btn" type="button">一覧</button>
+      <button id="history-btn" class="history-top-btn" type="button">一覧</button>
     </div>
     <div class="bgm-panel">
       <span>🎵 BGM</span>
@@ -1715,36 +1715,25 @@
   </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const historyBtn = document.getElementById('historyBtn');
-  const historyModal =
-    document.getElementById('historyModal') ||
-    document.querySelector('.history-modal') ||
-    document.querySelector('[id*="history"][id*="modal"]');
+document.addEventListener('DOMContentLoaded', function() {
+  const btn = document.getElementById('history-btn');
+  const modal = document.querySelector('.history-modal');
 
-  if (!historyBtn || !historyModal) return;
+  if (!btn || !modal) return;
 
-  historyBtn.addEventListener('click', () => {
-    historyModal.classList.add('active');
-    historyModal.style.display = 'flex';
-  });
+  btn.onclick = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+  };
 
-  const closeButtons = historyModal.querySelectorAll(
-    '.close, .close-btn, .modal-close, [data-close], button'
-  );
-  closeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      historyModal.classList.remove('active');
-      historyModal.style.display = '';
-    });
-  });
-
-  historyModal.addEventListener('click', (e) => {
-    if (e.target === historyModal) {
-      historyModal.classList.remove('active');
-      historyModal.style.display = '';
+  modal.onclick = function(e) {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      modal.style.display = 'none';
     }
-  });
+  };
 });
 </script>
 
