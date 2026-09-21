@@ -1385,10 +1385,24 @@
    * 下辺・STARTの位置・中身の中心位置は元のまま。
    */
   .display-area {
-    flex-basis: 124px !important;
-    height: 124px !important;
-    margin-top: -50px !important;
+    flex-basis: 108px !important;
+    height: 108px !important;
+    margin-top: -34px !important;
     margin-bottom: 2px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* STARTボタンがコンテナ下端で切れないように確保 */
+  .control-section {
+    flex: 0 0 38px !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .control-section .btn {
+    height: 38px !important;
+    min-height: 38px !important;
     box-sizing: border-box !important;
   }
 }
