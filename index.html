@@ -754,6 +754,118 @@
       }
     }
 
+
+    /* =========================================================
+       iPhone安定版：エモパレビンゴの直下に3ボタンを固定
+       画面右上への絶対配置をやめ、端末の縦横比に左右されにくくする
+       ========================================================= */
+    .container > .sidebar-panel {
+      position: relative !important;
+      top: auto !important;
+      right: auto !important;
+      left: auto !important;
+      width: 100% !important;
+      margin: 0 auto 8px !important;
+      padding: 0 !important;
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 7px !important;
+      z-index: 20 !important;
+    }
+
+    .container > .sidebar-panel .history-panel,
+    .container > .sidebar-panel .bgm-panel,
+    .container > .sidebar-panel .reset-panel {
+      flex: 0 0 auto !important;
+      margin: 0 !important;
+    }
+
+    .container > .sidebar-panel .history-panel {
+      border-color: var(--neon-blue) !important;
+      box-shadow: 0 0 8px rgba(0,243,255,.35) !important;
+    }
+
+    .container > .sidebar-panel .bgm-panel {
+      border-color: var(--neon-pink) !important;
+      box-shadow: 0 0 8px rgba(255,0,127,.35) !important;
+    }
+
+    .container > .sidebar-panel .reset-panel {
+      border-color: var(--neon-yellow) !important;
+      box-shadow: 0 0 8px rgba(255,234,0,.35) !important;
+    }
+
+    /* 縦向きスマホ */
+    @media (max-width: 768px) {
+      .container > .sidebar-panel {
+        gap: 5px !important;
+        margin-bottom: 7px !important;
+      }
+
+      .container > .sidebar-panel .history-panel,
+      .container > .sidebar-panel .bgm-panel,
+      .container > .sidebar-panel .reset-panel {
+        padding: 4px 7px !important;
+        gap: 4px !important;
+        font-size: .65rem !important;
+        border-width: 1.5px !important;
+      }
+
+      .container > .sidebar-panel .history-top-btn,
+      .container > .sidebar-panel .bgm-btn,
+      .container > .sidebar-panel .reset-btn {
+        padding: 2px 7px !important;
+        font-size: .65rem !important;
+      }
+    }
+
+    /* 横向きスマホ */
+    @media (max-width: 900px) and (orientation: landscape) {
+      .container > .sidebar-panel {
+        gap: 5px !important;
+        margin-bottom: 5px !important;
+      }
+
+      .container > .sidebar-panel .history-panel,
+      .container > .sidebar-panel .bgm-panel,
+      .container > .sidebar-panel .reset-panel {
+        padding: 3px 7px !important;
+        gap: 4px !important;
+        font-size: .62rem !important;
+      }
+
+      .container > .sidebar-panel .history-top-btn,
+      .container > .sidebar-panel .bgm-btn,
+      .container > .sidebar-panel .reset-btn {
+        padding: 2px 7px !important;
+        font-size: .62rem !important;
+      }
+    }
+
+    /* 極端に狭い画面でも3つを1列に維持しつつ縮小 */
+    @media (max-width: 380px) {
+      .container > .sidebar-panel {
+        gap: 3px !important;
+      }
+
+      .container > .sidebar-panel .history-panel,
+      .container > .sidebar-panel .bgm-panel,
+      .container > .sidebar-panel .reset-panel {
+        padding: 3px 5px !important;
+        gap: 3px !important;
+        font-size: .58rem !important;
+      }
+
+      .container > .sidebar-panel .history-top-btn,
+      .container > .sidebar-panel .bgm-btn,
+      .container > .sidebar-panel .reset-btn {
+        padding: 2px 5px !important;
+        font-size: .58rem !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -765,6 +877,20 @@
   <div id="cutin-container" class="cutin-container">
     <div id="cutin-text" class="cutin-text">DOUBLE<br>CHANCE!!</div>
   </div>
+
+
+
+  <div class="container">
+    <h1 id="pop-logo" class="pop-logo" aria-label="エモパレビンゴ">
+      <span style="--glow: var(--neon-pink); animation-delay: 0s;">エ</span>
+      <span style="--glow: var(--neon-blue); animation-delay: 0.1s;">モ</span>
+      <span style="--glow: var(--neon-yellow); animation-delay: 0.2s;">パ</span>
+      <span style="--glow: var(--neon-green); animation-delay: 0.3s;">レ</span>
+      <span class="space"></span>
+      <span style="--glow: var(--neon-purple); animation-delay: 0.5s;">ビ</span>
+      <span style="--glow: var(--neon-pink); animation-delay: 0.6s;">ン</span>
+      <span style="--glow: var(--neon-yellow); animation-delay: 0.7s;">ゴ</span>
+    </h1>
 
   <div class="sidebar-panel">
     <div class="history-panel">
@@ -784,18 +910,6 @@
       <button id="reset-btn" class="reset-btn">RESET</button>
     </div>
   </div>
-
-  <div class="container">
-    <h1 id="pop-logo" class="pop-logo" aria-label="エモパレビンゴ">
-      <span style="--glow: var(--neon-pink); animation-delay: 0s;">エ</span>
-      <span style="--glow: var(--neon-blue); animation-delay: 0.1s;">モ</span>
-      <span style="--glow: var(--neon-yellow); animation-delay: 0.2s;">パ</span>
-      <span style="--glow: var(--neon-green); animation-delay: 0.3s;">レ</span>
-      <span class="space"></span>
-      <span style="--glow: var(--neon-purple); animation-delay: 0.5s;">ビ</span>
-      <span style="--glow: var(--neon-pink); animation-delay: 0.6s;">ン</span>
-      <span style="--glow: var(--neon-yellow); animation-delay: 0.7s;">ゴ</span>
-    </h1>
 
     <div id="couple-stage" class="couple-stage">
       <div class="character groom"><img id="groom-img" src="couple_assets/groom_idle.png" alt="新郎キャラクター"></div>
