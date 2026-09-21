@@ -1291,6 +1291,28 @@
   }
 }
 
+
+<style>
+@media (max-width: 900px) and (orientation: landscape) {
+  #history-modal .history-list {
+    width: min(720px, 92vw) !important;
+    max-width: 720px !important;
+    grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  #history-modal .history-list .history-number {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    min-height: 56px !important;
+    font-size: 1.22rem !important;
+    border-width: 2px !important;
+    box-shadow: 0 0 8px currentColor !important;
+  }
+}
+</style>
 </style>
 
 <style>
