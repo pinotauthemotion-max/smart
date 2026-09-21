@@ -1488,6 +1488,120 @@
       padding-top: 2px;
     }
 
+  
+    /* Wedding版と同じ「確定直後」の強い発光 */
+    #num-display.history-confirm-glow {
+      animation: historyConfirmPulse 0.55s infinite alternate ease-in-out !important;
+      filter: brightness(1.15) !important;
+      text-shadow:
+        0 0 8px #fff,
+        0 0 18px currentColor,
+        0 0 34px currentColor,
+        0 0 55px currentColor !important;
+    }
+
+    @keyframes historyConfirmPulse {
+      0% {
+        filter: brightness(1.05);
+        text-shadow:
+          0 0 6px #fff,
+          0 0 14px currentColor,
+          0 0 26px currentColor;
+      }
+      100% {
+        filter: brightness(1.7);
+        text-shadow:
+          0 0 12px #fff,
+          0 0 25px currentColor,
+          0 0 45px currentColor,
+          0 0 65px currentColor;
+      }
+    }
+
+    /* 履歴：最新は確定直後に強く光る。1個前はWedding版の最新数字のように発光を残す */
+    .history-number.latest-history-number {
+      z-index: 3;
+      font-weight: 1000 !important;
+      border-color: #fff !important;
+      filter: brightness(1.45) saturate(1.15);
+      text-shadow:
+        0 0 5px #fff,
+        0 0 12px currentColor,
+        0 0 24px currentColor !important;
+      box-shadow:
+        0 0 8px #fff,
+        0 0 16px currentColor,
+        0 0 30px currentColor !important;
+      animation: historyLatestPulse 0.55s infinite alternate ease-in-out !important;
+    }
+
+    .history-number.previous-history-number {
+      z-index: 2;
+      font-weight: 1000 !important;
+      filter: brightness(1.18) saturate(1.08);
+      text-shadow:
+        0 0 4px #fff,
+        0 0 10px currentColor,
+        0 0 20px currentColor !important;
+      box-shadow:
+        0 0 7px currentColor,
+        0 0 14px currentColor !important;
+      animation: historyPreviousPulse 0.55s infinite alternate ease-in-out !important;
+    }
+
+    @keyframes historyLatestPulse {
+      0% {
+        filter: brightness(1.15) saturate(1.05);
+        box-shadow:
+          0 0 7px #fff,
+          0 0 14px currentColor,
+          0 0 24px currentColor;
+      }
+      100% {
+        filter: brightness(1.75) saturate(1.25);
+        box-shadow:
+          0 0 12px #fff,
+          0 0 25px currentColor,
+          0 0 42px currentColor;
+      }
+    }
+
+    @keyframes historyPreviousPulse {
+      0% {
+        filter: brightness(1.05) saturate(1);
+        box-shadow:
+          0 0 5px currentColor,
+          0 0 11px currentColor;
+      }
+      100% {
+        filter: brightness(1.45) saturate(1.12);
+        box-shadow:
+          0 0 8px currentColor,
+          0 0 19px currentColor,
+          0 0 28px currentColor;
+      }
+    }
+
+    /* 横向きでも上書きされないように */
+    @media (max-width: 900px) and (orientation: landscape) {
+      #num-display.history-confirm-glow {
+        animation: historyConfirmPulse 0.55s infinite alternate ease-in-out !important;
+      }
+      .history-inline .history-number.latest-history-number {
+        animation: historyLatestPulse 0.55s infinite alternate ease-in-out !important;
+        box-shadow:
+          0 0 8px #fff,
+          0 0 16px currentColor,
+          0 0 30px currentColor !important;
+      }
+      .history-inline .history-number.previous-history-number {
+        animation: historyPreviousPulse 0.55s infinite alternate ease-in-out !important;
+        box-shadow:
+          0 0 7px currentColor,
+          0 0 14px currentColor !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1618,17 +1732,23 @@
     }
 
     function renderHistory() {
-      const recent = drawnHistory.slice(-8);
-      const latestIndex = recent.length - 1;
-      historyList.innerHTML = recent.map((num, index) =>
-        `<div class="history-number ${getHistoryClass(num)}${index === latestIndex ? ' latest-history-number' : ''}">${num}</div>`
-      ).join('');
+      const recent = drawnHistory.slice(-8).reverse();
+      historyList.innerHTML = recent.map((num, index) => {
+        const cls = index === 0
+          ? ' latest-history-number'
+          : (index === 1 ? ' previous-history-number' : '');
+        return `<div class="history-number ${getHistoryClass(num)}${cls}">${num}</div>`;
+      }).join('');
     }
 
     function renderAllHistory() {
-      historyAllList.innerHTML = drawnHistory.map((num, index) =>
-        `<div class="history-number ${getHistoryClass(num)}${index === drawnHistory.length - 1 ? ' latest-history-number' : ''}" title="${index + 1}回目">${num}</div>`
-      ).join('');
+      historyAllList.innerHTML = drawnHistory.slice().reverse().map((num, reverseIndex) => {
+        const originalIndex = drawnHistory.length - 1 - reverseIndex;
+        const cls = reverseIndex === 0
+          ? ' latest-history-number'
+          : (reverseIndex === 1 ? ' previous-history-number' : '');
+        return `<div class="history-number ${getHistoryClass(num)}${cls}" title="${originalIndex + 1}回目">${num}</div>`;
+      }).join('');
     }
 
     function openHistory() {
@@ -1901,7 +2021,7 @@
         const class1 = getCellColorClass(chosen1);
         const class2 = getCellColorClass(chosen2);
 
-        display.innerHTML = `<div class="double-nums super-bounce"><span class="${class1}">${chosen1}</span><span class="${class2}">${chosen2}</span></div>`;
+        display.innerHTML = `<div class="double-nums super-bounce history-confirm-glow"><span class="${class1}">${chosen1}</span><span class="${class2}">${chosen2}</span></div>`;
         playMegaWinSound();
         launchMegaConfetti(true);
 
@@ -1913,7 +2033,7 @@
       } else {
         const chosen = numbers.splice(Math.floor(Math.random() * numbers.length), 1)[0];
         display.textContent = chosen;
-        display.classList.add('super-bounce');
+        display.classList.add('super-bounce', 'history-confirm-glow');
         playMegaWinSound();
         launchMegaConfetti();
 
@@ -1935,6 +2055,7 @@
         document.querySelectorAll('.board-cell.latest-active').forEach(cell => cell.classList.remove('latest-active'));
 
         isRolling = true; currentSpeed = 40; stopStep = 0;
+        display.classList.remove('history-confirm-glow');
         extremeCount = 0; targetExtremeCount = 0;
 
         if (numbers.length <= 70 && Math.random() < 0.15 && numbers.length >= 2) {
