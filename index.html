@@ -114,20 +114,43 @@
       display: flex; align-items: center; justify-content: center;
       transition: background 0.2s;
     }
-    .cutin-container.active { background: rgba(0, 0, 0, 0.7); }
-    .cutin-text {
-      font-family: 'Monoton', sans-serif; font-size: 6rem;
-      color: #fff; text-align: center; line-height: 1.1;
-      opacity: 0; transform: translate3d(0,0,0) scale(0.3);
-      text-shadow: 0 0 15px var(--neon-pink); will-change: transform, opacity;
+  /* DOUBLE CHANCE：軽量な出現→消滅演出 */
+  .cutin-container.active {
+    background: rgba(0,0,0,.62);
+  }
+
+  .cutin-text {
+    font-family: 'Monoton';
+    font-size: 5.2rem;
+    opacity: 0;
+    text-shadow:
+      0 0 8px var(--neon-pink),
+      0 0 18px var(--neon-pink),
+      0 0 32px var(--neon-pink);
+  }
+
+  .cutin-anim {
+    animation: doubleChanceSimple 1.2s ease-in-out forwards;
+  }
+
+  @keyframes doubleChanceSimple {
+    0% {
+      opacity: 0;
+      filter: brightness(1);
     }
-    .cutin-anim { animation: explodeCutin 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-    @keyframes explodeCutin {
-      0% { opacity: 0; transform: translate3d(0,0,0) scale(0.3); }
-      18% { opacity: 1; transform: translate3d(0,0,0) scale(1.15); }
-      75% { opacity: 1; transform: translate3d(0,0,0) scale(1); }
-      100% { opacity: 0; transform: translate3d(0,0,0) scale(1.8); }
+    25% {
+      opacity: 1;
+      filter: brightness(1.8);
     }
+    70% {
+      opacity: 1;
+      filter: brightness(1.35);
+    }
+    100% {
+      opacity: 0;
+      filter: brightness(1);
+    }
+  }
 
     .double-nums {
       display: flex; gap: 30px; justify-content: center; align-items: center;
