@@ -70,6 +70,41 @@
       padding: 4px 14px; border-radius: 20px; cursor: pointer; background: var(--neon-pink); transition: 0.15s ease;
       color: white; box-shadow: 0 0 6px var(--neon-pink);
     }
+
+    /* 上部：数字一覧 / BGM / GAME を同じカプセルデザインで横並び */
+    .history-panel {
+      background: rgba(26, 22, 53, 0.9);
+      padding: 8px 18px;
+      border-radius: 50px;
+      border: 2px solid var(--neon-blue);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 0 10px var(--neon-blue);
+    }
+
+    .history-top-btn {
+      font-family: inherit;
+      font-weight: 900;
+      border: 1.5px solid #fff;
+      padding: 4px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      background: var(--neon-blue);
+      color: var(--dark-bg);
+      box-shadow: 0 0 6px var(--neon-blue);
+      transition: 0.15s ease;
+    }
+
+    .history-top-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 12px var(--neon-blue);
+    }
+
+    .history-top-btn:active {
+      transform: scale(0.95);
+    }
+
     .reset-btn:hover { transform: scale(1.05); box-shadow: 0 0 12px var(--neon-pink); }
     .reset-btn:active { transform: scale(0.95); }
 
@@ -347,7 +382,7 @@
       .bgm-btn, .reset-btn { padding: 3px 9px; font-size: .72rem; }
       .container { padding-top: 7px; padding-bottom: 7px; }
       .pop-logo { margin-right: 185px; }
-      .history-btn { margin-top: 5px; padding: 5px 15px; font-size: .78rem; }
+      .history-btn { display: none !important; }
       .history-card { width:min(700px,92vw); max-height:82vh; border-radius:16px; padding:10px; }
       .history-list { grid-template-columns:repeat(auto-fill,minmax(48px,1fr)); gap:5px; max-height:calc(82vh - 65px); }
       .history-number { font-size:.85rem; }
@@ -661,8 +696,18 @@
     @media (max-width: 900px) and (orientation: landscape) {
       body { padding: 4px 8px; justify-content: center; overflow: hidden; }
       #bg-video { opacity: .22; }
-      .sidebar-panel { position: absolute; top: 5px; right: 7px; margin: 0; width: auto; gap: 5px; flex-direction: row; z-index: 20; }
-      .bgm-panel, .reset-panel { padding: 3px 7px; font-size: .62rem; border-width: 1px; box-shadow: none; }
+      .sidebar-panel { position: absolute; top: 5px; right: 7px; margin: 0; width: auto; gap: 5px; flex-direction: row; z-index: 20; align-items: center; }
+      .history-panel, .bgm-panel, .reset-panel {
+        padding: 3px 7px;
+        font-size: .62rem;
+        border-width: 1px;
+        box-shadow: none;
+      }
+      .history-top-btn, .bgm-btn, .reset-btn {
+        padding: 2px 7px;
+        font-size: .62rem;
+        box-shadow: none;
+      }
       .bgm-btn, .reset-btn { padding: 2px 7px; font-size: .62rem; box-shadow: none; }
       .container { width: 98%; max-width: 980px; padding: 5px 10px 6px; margin: 0; border-radius: 14px; box-shadow: 0 0 12px rgba(179,0,255,.2); }
       .container::before { border-radius: 14px; padding: 3px; }
@@ -704,12 +749,18 @@
   </div>
 
   <div class="sidebar-panel">
+    <div class="history-panel">
+      <span>🔢 数字</span>
+      <button id="history-btn" class="history-top-btn" type="button">一覧</button>
+    </div>
+
     <div class="bgm-panel">
       <span>🎵 BGM</span>
       <button id="bgm-toggle" class="bgm-btn">OFF</button>
       <audio id="bgm-ambient" src="bgm_ambient.mp3" loop></audio>
       <audio id="bgm-roulette" src="bgm_roulette.mp3"></audio>
     </div>
+
     <div class="reset-panel">
       <span>🔄 GAME</span>
       <button id="reset-btn" class="reset-btn">RESET</button>
@@ -735,7 +786,6 @@
     <div class="display-area"><div id="num-display">BINGO</div></div>
     <div class="control-section"><button id="action-btn" class="btn btn-start">START</button></div>
 
-    <button id="history-btn" class="history-btn" type="button">🔢 出た数字一覧</button>
   </div>
 
   <div id="history-modal" class="history-modal" aria-hidden="true">
